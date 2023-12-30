@@ -90,19 +90,19 @@ Welcome to the Modern Banking Website, a fully-fledged online banking platform d
 
 ## Screenshots
 - Customer Dashboard:
-![Customer_Dashboard](screenshot\PB_CHPILM.png)
+![Customer_Dashboard](screenshot/PB_CHPILM.png)
 
 - Staff Dashboard:
-![Staff_Dashboard](screenshot\PB_SHPILM.png)
+![Staff_Dashboard](screenshot/PB_SHPILM.png)
 
 - Customer Login Page in Dark Mode:
-![Customer_Login](screenshot\PB_CLIDM.png)
+![Customer_Login](screenshot/PB_CLIDM.png)
 
 - Staff: Customer Account Management in Dark Mode
-![Staff_Manage_CustomerAcc](screenshot\PB_SMCVIDM.png)
+![Staff_Manage_CustomerAcc](screenshot/PB_SMCVIDM.png)
 
 - Interest Calculator:
-![Interest_Calculator](screenshot\PB_ICIDM.png)
+![Interest_Calculator](screenshot/PB_ICIDM.png)
 
 ## Contributing
 Feel free to contribute by submitting issues or pull requests.

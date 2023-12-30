@@ -4,7 +4,7 @@ Welcome to the Modern Banking Website, a fully-fledged online banking platform d
 
 ## Features
 
-### General Features
+### General Key Features
 
 * Responsive Design: Built using Bootstrap for a seamless experience across various devices and screen sizes.
 * Interactive UI: Dynamic and engaging user interface with smooth transitions and intuitive controls using JavaScript.

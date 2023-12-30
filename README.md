@@ -68,14 +68,13 @@ Welcome to the Modern Banking Website, a fully-fledged online banking platform d
 - **Frontend:** HTML, CSS, Bootstrap, JavaScript
 - **Backend:** Python Django
 - **Database:** SQLite (can be easily configured for other databases)
-- **APIs:** Paystack - For payment processing
-            MobileNig - For top-up and bill payments
+- **APIs:** Paystack - For payment processing; MobileNig - For top-up and bill payments
 - **Deployment:** 
 
 ## Getting Started
 
 ### 1. Clone the repository:
-   git clone https://github.com/PeterOlayemi/Banking-System.git
+    git clone https://github.com/PeterOlayemi/Banking-System.git
 
 ### 2. Install dependencies:
     pip install -r requirements.txt

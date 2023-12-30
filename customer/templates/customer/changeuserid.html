@@ -1,0 +1,15 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <h2 class="center">CHANGE USER ID</h2>
+    <div class="container col-lg-6">
+        <a href="{% url 'setting' %}">Back</a><hr><br><br>
+        <form method="post">
+        {%csrf_token%}
+        OLD USER ID: <input type="text" name="old_user_id" maxlength="11" required><br><br>
+        NEW USER ID: <input type="number" name="new_user_id" maxlength="11" required><br><br>
+        <div class="flex flex-justify"><div>TRANSACTION PIN: <input type="password" name="pin" maxlength="4" minlength="4" required></div>
+        <input type="submit" value="Done" class="btn btn-primary"></div>
+        </form>
+    </div>
+{%endblock%}

@@ -1,0 +1,25 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    {% if account.txn_limit == 100000.0 %}
+        <h2 class="center">MODIFY TRANSACTION LIMIT</h2><hr><br>
+        <div class="container col-lg-6">
+            <form method="post">
+                {%csrf_token%}
+                <p>ACCOUNT: {{account.account_name}}/{{account.account_number}}<br><br>
+                Your Transaction Limit Will Be Changed To ₦1 000 000<br>
+                A Sum Of ₦1000 Is Needed In Your Account For This Process</p>
+                <p>BANK VERIFICATION NUMBER(BVN): <input type="text" maxlength="20" minlength="10" required name="bvn"></p>
+                <p><input type="checkbox" name="agree"> I Agree To Patridge Bank's <a href="{% url 'term' %}">Terms</a> And <a href="{% url 'privacy' %}">Policies</a> Regarding Bank Verification Number Security</p>
+                <p><input type="submit" value="Request" class="btn btn-primary"> &nbsp; <a href="{% url 'service' %}" class="btn btn-danger">Cancel</a></p>
+            </form>
+        </div>
+    {%else%}
+        <h2 class="center">REQUEST ERROR</h2>
+        <div class="container col-lg-6">
+            <a href="{% url 'service' %}">Back</a><hr><br>
+            <p>Your Transaction Limit Has Already Been Upgraded And Cannot Be Further Modified.<br>
+            Thank You.</p>
+        </div>
+    {%endif%}
+{% endblock %}

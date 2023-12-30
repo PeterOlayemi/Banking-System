@@ -1,0 +1,32 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+    <h2 class="center">REQUEST LOAN</h2>
+    <h3>{{account.account_name}} / {{account.account_number}}</h3><br>
+    <a href="{% url 'loanmanage' account.pk %}">Back</a><hr><br>
+    <div class="ml-4">
+        <form method="post" id="loanForm">
+            <p>Note That There Is An Interest At A <b>Rate Of 15% Every Month (0.5% Every Day)</b> Till The Loan Is Settled.</p>
+            <p>User Must Be More Than 6 Months Old And Must Have Spent More Than ₦10 000 With The Account.</p>
+            {% csrf_token %}
+            AMOUNT: <input type="number" name="amount" id="amount" max="100000" required><br><br>
+            REASON: <input type="text" name="reason" required><br><br>
+            SOURCE OF INCOME: <input type="text" name="income" required><br><br>
+            <div class="flex">
+                FOR: <div class="spacer"></div>
+                    <input type="checkbox" name="1week" id="1week"> 1 WEEK <div class="spacer"></div>
+                    <input type="checkbox" name="1month" id="1month"> 1 MONTH <div class="spacer"></div>
+                    <input type="checkbox" name="3months" id="3months"> 3 MONTHS <div class="spacer"></div>
+                    <input type="checkbox" name="6months" id="6months"> 6 MONTHS
+            </div><br>
+            <p>ADD DATE BEFORE WHICH LOAN MUST BE PAID: <input type="date" name="date" required></p>
+            <div class="right"><input type="submit" value="Request" class="btn btn-info"></div>
+        </form>
+    </div>
+
+    {% load static %}
+    <script src="{% static 'js/submit.js' %}"></script>
+    <script>
+        const accountDetail = "{{account.account_name}} / {{account.account_number}}"
+    </script>
+{% endblock %}

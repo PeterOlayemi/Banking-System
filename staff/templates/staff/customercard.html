@@ -1,0 +1,36 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="center">CUSTOMER'S CARD MANAGEMENT</h2>
+    <h3>{{account.account_name}} / {{account.account_number}}</h3><br>
+    <a href="{% url 'customerdetail' account.account_number %}">Back</a><hr><br>
+        {% if card != None %}
+            <div class="row">
+                <div class="col-md-2 order-md-last">
+                    <a href="{% url 'changecustomercardpin' card.pk %}">Change Card Pin</a><br><br>
+                    <a class="delete-card-button"
+                        data-id="{{ card.pk }}"
+                        data-name="{{ card.account.account_name|title }}"
+                        data-number="{{ card.account.account_number }}"
+                        data-remove-url="{% url 'deletecard' %}"
+                        data-done-url="{% url 'cardmanage' card.account.pk %}">
+                        Remove Card
+                    </a><br><br>
+                    <a href="{% url 'requestcard' account.pk %}">Request New Card</a><br><br><br><br>
+                </div>
+                <div class="col-md-10">
+                    <div class="card">
+                        <p class="card_number">{{card.card_number|slice:"0:4"}} {{card.card_number|slice:"4:8"}} {{card.card_number|slice:"8:12"}} {{card.card_number|slice:"12:16"}}</p>
+                        <p class="card_expiry">{{card.expires|date:"m/y"}}</p>
+                        <p class="card_owner">{{card.account.account_name|upper}}</p>
+                    </div>
+                </div>
+            </div>
+        {%else%}
+            <p>No Valid Card Is Attached To This Account<br>
+            You Can Request One Below</p>
+            <a href="{% url 'requestcard' account.pk %}" class="btn btn-info">REQUEST NEW CARD</a>
+        {%endif%}
+</div>
+{%endblock%}

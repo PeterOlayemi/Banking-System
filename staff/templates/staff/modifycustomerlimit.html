@@ -1,0 +1,24 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+    {% if account.txn_limit == 100000.0 %}
+        <h2 class="center">MODIFY TRANSACTION LIMIT</h2><hr><br>
+        <div class="container col-lg-6">
+            <form method="post">
+                {%csrf_token%}
+                <p>ACCOUNT: {{account.account_name}}/{{account.account_number}}<br><br>
+                Customer's Transaction Limit Will Be Changed To ₦1 000 000<br>
+                A Sum Of ₦1000 Is Needed In Customer's Account For This Process</p>
+                <p>BANK VERIFICATION NUMBER(BVN): <input type="text" maxlength="20" minlength="10" required name="bvn"></p>
+                <p><input type="submit" value="Modify" class="btn btn-primary"> &nbsp; <a href="{% url 'editcustomer' account.pk %}" class="btn btn-danger">Cancel</a></p>
+            </form>
+        </div>
+    {%else%}
+        <h2 class="center">REQUEST ERROR</h2>
+        <div class="container col-lg-6">
+            <a href="{% url 'editcustomer' account.pk %}">Back</a><hr><br>
+            <p>Customer's Transaction Limit Has Already Been Upgraded And Cannot Be Further Modified.<br>
+            Thank You.</p>
+        </div>
+    {%endif%}
+{%endblock%}

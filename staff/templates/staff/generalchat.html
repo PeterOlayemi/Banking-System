@@ -1,0 +1,48 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+    <div class="flex flex-justify">
+        <h2>CHATS</h2>
+        <div>
+            <form method="post">
+                {%csrf_token%}
+                <input type="text" name="data" placeholder="Search For Conversation" required> &nbsp; &nbsp; <input type="submit" value="Search" class="btn btn-info">
+            </form>
+        </div>
+    </div><br>
+    <a href="{% url 'new_convo' %}">Message A Staff</a><hr><br>
+    <div class="container col-lg-6">
+        {% for convo in conversation %}
+            {% if convo.unread == 0 %}
+                <div class="flex">
+                    {% if convo.picture %}<img src="{{convo.picture.url}}" style="height: 50px; width: 50px; border-radius: 30px;" alt="dp">{%else%}<a class="btn-link">No_Pic</a>{%endif%}
+                    <div class="ml-4">
+                        • <a href="{% url 'chat_room' convo.pk %}">{{convo.other_staff.first_name}} {{convo.other_staff.middle_name}} {{convo.other_staff.last_name}}</a><br>
+                        <div class="ml-3">{% if convo.last.sender == request.user %}You: {%endif%}{{convo.last.message|slice:20}}...</div>
+                    </div>
+                </div><br><br>
+            {%else%}
+                <div class="flex">
+                    {% if convo.picture %}<img src="{{convo.picture.url}}" style="height: 50px; width: 50px; border-radius: 30px;" alt="dp">{%else%}<a class="btn-link">No_Pic</a>{%endif%}
+                    <div class="ml-4"><b>
+                        <div class="flex">
+                            <div>• <a href="{% url 'chat_room' convo.pk %}">{{convo.other_staff.first_name}} {{convo.other_staff.middle_name}} {{convo.other_staff.last_name}}</a></div>
+                            <div style="padding-left: 150px;">{{convo.unread}} New</div>
+                        </div>
+                        <div class="ml-3">{% if convo.last.sender == request.user %}You: {%endif%}{{convo.last.message|slice:20}}...</div></b>
+                    </div>
+                </div><br><br>
+            {%endif%}
+        {% empty %}
+            <p>You Have No Conversation</p>
+        {%endfor%}<br>
+        <div class="flex">
+            {% if conversation.has_previous %}
+                <a href="?page={{ conversation.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a>
+            {% endif %}
+            {% if conversation.has_next %}
+                <a href="?page={{ conversation.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+{%endblock%}

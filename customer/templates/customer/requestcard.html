@@ -1,0 +1,22 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    {% if card == False %}
+        <div class="container col-lg-6">
+            <form method="post">
+                <h2 class="center">REQUEST A NEW CARD</h2><hr><br>
+                {%csrf_token%}
+                <p>Are You Sure You Want To Request An Atm Card For Your Account - {{account.account_name}} / {{account.account_number}}?</p>
+                <p>A Sum Of ₦1000 Is Needed In Your Account For This Process.</p>
+                <input type="submit" value="Yes" class="btn btn-primary"> &nbsp; &nbsp; <a href="{% url 'service' %}" class="btn btn-danger">Cancel</a>
+            </form>
+        </div>
+    {%else%}
+        <div class="container col-lg-6">
+            <h2 class="center">REQUEST ERROR</h2>
+            <a href="{% url 'service' %}">Back</a><hr><br>
+            <p>You Already Have An Atm Card Attached To Your Account.<br>
+            If It Has Been Misplaced Or Stolen, Visit A <a href="{% url 'locate' %}">Branch</a> Or Email Us At <a href="mailto:patridgebank@yahoo.com?subject=Complaint:">patridgebank@yahoo.com</a> To Block Your Card And Get A New One.</p>
+        </div>
+    {%endif%}
+{% endblock %}

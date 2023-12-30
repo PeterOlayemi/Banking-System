@@ -1,0 +1,18 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+    <div class="container col-lg-6">
+        <h2 class="center">TRANSFER TO BENEFICIARY</h2>
+        <h3>Account: {{account.account_name}} / ₦{{account.user.balance}}</h3><br>
+        <a href="{% url 'managebene' account.pk %}">Back</a><hr><br>
+        <form method="post">
+            {%csrf_token%}
+            BENEFICIARY'S ACCOUNT NUMBER: <input type="number" name="receiver" value="{{beneficiary.beneficiary.account_number}}" required><br><br>
+            AMOUNT: <input type="number" name="amount" required><br><br>
+            <div class="flex flex-justify">
+                <div>PURPOSE(Optional): <input type="text" name="purpose" maxlength="19"></div>
+                <input type="submit" value="Next" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+{% endblock %}

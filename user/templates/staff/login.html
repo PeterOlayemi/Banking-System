@@ -1,0 +1,14 @@
+{% extends 'general/base.html' %}
+
+{% block content %}
+<div class="container mt-4 col-lg-6">
+    <div class="center"><h2>WELCOME TO PATRIDGE BANK STAFF PORTAL!!!</h2></div><br>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <div class="flex flex-justify"><div><input type="checkbox" name="remember_me"> &nbsp; Remember Me</div> <a href="{% url 'staff_password_reset' %}">Forgot Password!</a></div><br>
+        <div class="right"><button type="submit" class="btn btn-primary">Login</button></div>
+    </form><br>
+    <p class="center">Don't Have An Account? <a href="{% url 'staff_register' %}" class="btn btn-primary">Create A Staff Account</a> Now!<br><br><br>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <div class="container col-lg-6">
+        <h2 class="center">SETTINGS</h2><hr><br>
+        • <a href="{% url 'changeuserid' %}">CHANGE USER ID</a><br><br>
+        • <a href="{% url 'customer_password_change' %}">CHANGE PASSWORD</a><br><br>
+        • <a href="{% url 'changepin' %}">CHANGE TRANSACTION PIN</a><br><br>
+        <div style="display: flex;">
+            •&nbsp;<a class="btn-link">EMAIL NOTIFICATION:</a> 
+            <div class="ml-4" style="margin-top: -2%;">
+                <form method="post">
+                    {%csrf_token%}
+                    {% load static %}
+                    {% if user.email_notification == True %}
+                        <button type="submit" class="btn btn-link">
+                            <img src="{% static 'img/on.png' %}" alt="email_on" style="height: 40px;">
+                        </button>
+                    {%else%}
+                        <button type="submit" class="btn btn-link">
+                            <img src="{% static 'img/off.png' %}" alt="email_off" style="height: 40px;">
+                        </button>
+                    {%endif%}
+                </form>
+            </div>
+        </div>
+        • <a class="logout"
+                data-logout-url="{% url 'customer_logout' %}"
+                data-success-url="{% url 'customer_login' %}">
+                LOG OUT
+        </a>
+    </div>
+{% endblock %}

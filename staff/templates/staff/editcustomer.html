@@ -1,0 +1,61 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+<div class="container col-lg-6">
+    <h2 class="center">EDIT CUSTOMER PROFILE</h2>
+    <h3>{{account.account_name}} / {{account.account_number}}</h3><br>
+    <a href="{% url 'customerdetail' account.account_number %}">Back</a><hr><br>
+    <div class="container ml-4">
+        • <a href="{% url 'editcustomerdetail' account.pk %}">EDIT USER/ACCOUNT DETAILS</a><br><br>
+        <div class="flex">
+            •&nbsp;<a class="btn-link">EMAIL NOTIFICATION:</a> 
+            <div class="ml-4" style="margin-top: -2%;">
+                <form method="post">
+                    {%csrf_token%}
+                    {% load static %}
+                    {% if account.user.email_notification == True %}
+                        <button type="submit" class="btn btn-link">
+                            <img src="{% static 'img/on.png' %}" alt="email_on" style="height: 40px;">
+                        </button>
+                    {%else%}
+                        <button type="submit" class="btn btn-link">
+                            <img src="{% static 'img/off.png' %}" alt="email_off" style="height: 40px;">
+                        </button>
+                    {%endif%}
+                </form>
+            </div>
+        </div>
+        • <a href="{% url 'modify_limit' account.pk %}">MODIFY TRANSACTION LIMIT</a><br><br>
+        • <a href="{% url 'changecustomeruserid' account.pk %}">CHANGE USER ID</a><br><br>
+        • <a href="{% url 'changecustomerpassword' account.pk %}">CHANGE PASSWORD</a><br><br>
+        • <a href="{% url 'changecustomerpin' account.pk %}">CHANGE TRANSACTION PIN</a><br><br>
+        {% if account.user.is_active == True %}
+            • <a class="freeze-button"
+                data-id="{{ account.pk }}"
+                data-name="{{ account.account_name|title }}"
+                data-number="{{ account.account_number }}"
+                data-freeze-url="{% url 'freeze' %}"
+                data-done-url="{% url 'customerdetail' account.account_number %}">
+                FREEZE CUSTOMER'S ACCOUNT
+            </a>
+        {%else%}
+            • <a class="unfreeze-button"
+                data-id="{{ account.pk }}"
+                data-name="{{ account.account_name|title }}"
+                data-number="{{ account.account_number }}"
+                data-unfreeze-url="{% url 'unfreeze' %}"
+                data-done-url="{% url 'customerdetail' account.account_number %}">
+                UNFREEZE CUSTOMER'S ACCOUNT
+            </a>
+        {%endif%}<br><br>
+        • <a class="delete-customer-button"
+            data-id="{{ account.pk }}"
+            data-name="{{ account.account_name|title }}"
+            data-number="{{ account.account_number }}"
+            data-delete-url="{% url 'deletecustomer' %}"
+            data-done-url="{% url 'staff_home' %}">
+            DELETE CUSTOMER ACCOUNT
+        </a>
+    </div>
+</div>
+{%endblock%}

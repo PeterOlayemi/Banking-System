@@ -1,0 +1,14 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <h2 class="center">CONFIRM BENEFICIARY</h2>
+    <div class="container col-lg-6">
+        <form method="post">
+            {% csrf_token %}
+            <p>ACCOUNT NUMBER: {{beneficiary.beneficiary.account_number}}</p>
+            <p>ACCOUNT NAME: {{beneficiary.beneficiary.account_name}}</p>
+            <p>ACCOUNT TYPE: {{beneficiary.beneficiary.account_type}}</p>
+            <input type="submit" value="Confirm" class="btn btn-primary">&nbsp;&nbsp;<a href="{% url 'addbeneficiary' %}" class="btn btn-danger">Cancel</a>
+        </form>
+    </div>
+{%endblock%}

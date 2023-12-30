@@ -1,0 +1,16 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <h2 class="center">TRANSFER DETAIL</h2>
+    <div class="container col-lg-6">
+        <a href="{{request.META.HTTP_REFERER}}">Back</a><hr><br><br>
+        <p>TXN: {{transfer.txn_id}}</p>
+        <p>SENDER: {% if transfer.sender.user == request.user %} MY ACCOUNT - {{transfer.sender.account_name}} / {{transfer.sender.account_number}}{%else%}{{transfer.sender.account_name}} / {{transfer.sender.account_number}}{%endif%}</p>
+        <p>RECEIVER: {% if transfer.receiver.user == request.user %} MY ACCOUNT - {{transfer.receiver.account_name}} / {{transfer.receiver.account_number}}{%else%}{{transfer.receiver.account_name}} / {{transfer.receiver.account_number}}{%endif%}</p>
+        <p>AMOUNT: ₦{{transfer.amount}}</p>
+        <p>STATUS: {{transfer.status}}</p>
+        {% if transfer.purpose %}<p>PURPOSE: {{transfer.purpose}}</p>{%endif%}
+        <p>DATE: {{transfer.date}}</p><br>
+        {% if transfer.sender.user == request.user %}<p><a href="{% url 'repeattransfer' transfer.pk %}" class="btn btn-info">Repeat Transaction</a></p>{%endif%}
+    </div>
+{%endblock%}

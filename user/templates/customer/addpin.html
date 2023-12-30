@@ -1,0 +1,14 @@
+{% extends 'general/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="center"><h2>ADD PIN TO YOUR ACCOUNT</h2></div><br>
+    <div class="center">
+        <p>This pin will be used to validate all your transactions so make sure it is unique and strong.</p>
+        <form method="post">
+            {% csrf_token %}
+            <input type="password" name="pin" placeholder="Enter 4-Digits Pin" minlength="4" maxlength="4" required> &nbsp; &nbsp; <button type="submit" class="btn btn-primary">Save</button>
+        </form><br><br><br>
+    </div>
+</div>
+{% endblock %}

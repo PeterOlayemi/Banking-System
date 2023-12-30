@@ -1,0 +1,18 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+    <div class="container col-lg-6">
+        <h2 class="center">MANAGE CUSTOMER'S BENEFICIARY</h2>
+        <h3>{{account.account_name}} / {{account.account_number}}</h3><br>
+        <form method="post">
+            {%csrf_token%}
+            <h3>CONFIRM BENEFICIARY</h3>
+            <p>CUSTOMER: {{account.account_name}} / {{account.account_number}}</p>
+            <p>BENEFICIARY'S ACCOUNT NAME: {{beneficiary.beneficiary.account_name}}</p>
+            <p>BENEFICIARY'S ACCOUNT NUMBER: {{beneficiary.beneficiary.account_number}}</p>
+            <p>BENEFICIARY'S ACCOUNT TYPE: {{beneficiary.beneficiary.account_type}}</p>
+            <p>DATE: {{date}}</p>
+            <input type="submit" value="Confirm" class="btn btn-primary"> &nbsp; &nbsp; <a href="{% url 'addbene' account.pk %}" class="btn btn-danger">Cancel</a>
+        </form>
+    </div>
+{%endblock%}

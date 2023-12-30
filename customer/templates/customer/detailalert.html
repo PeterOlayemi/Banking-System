@@ -1,0 +1,26 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <h2 class="center">ALERT DETAIL</h2>
+    <div class="container col-lg-6">
+        <a href="{{request.META.HTTP_REFERER}}">Back</a><hr><br>
+        <p>ID: {{alert.id}}</p>
+        <p>TXN: {{alert.txn}}</p>
+        <p>AMOUNT: ₦{{alert.amount}}</p>
+        <p>DESC_: {{alert.detail}}</p>
+        <p>DATE: <i>{{alert.date}}</i></p>
+        <p>
+            {% if alert.transfer %}
+                <a href="{% url 'detailtransfer' alert.transfer.pk %}" class="btn btn-info">View Transaction</a>
+            {% elif alert.bill %}
+                <a href="{% url 'detailbill' alert.bill.pk %}" class="btn btn-info">View Transaction</a>
+            {% elif alert.topup %}
+                <a href="{% url 'detailtop' alert.topup.pk %}" class="btn btn-info">View Transaction</a>
+            {% elif alert.card %}
+                <a href="{% url 'service' %}" class="btn btn-info">View Card</a>
+            {% elif alert.loan %}
+                <a href="{% url 'loan' %}" class="btn btn-info">View Loan</a>
+            {%endif%}
+        </p>
+    </div>
+{% endblock %}

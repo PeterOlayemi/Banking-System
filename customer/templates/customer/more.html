@@ -1,0 +1,14 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <div class="container col-lg-6">
+        <h2 class="center">MORE</h2><hr><br>
+        • <a href="{% url 'service' %}">OTHER SERVICES</a><br><br>
+        • <a href="{% url 'locate' %}">LOCATE US</a><br><br>
+        • <a href="{% url 'contact' %}">CONTACT US</a><br><br>
+        • <a href="{% url 'support' %}">SUPPORT<sup style="font-size: medium;">{% if support_c == 0 %}(No New Message){%else%}({{support_c}} Unread Message{{support_c|pluralize}}){%endif%}</sup></a><br><br>
+        • <a href="{% url 'faq' %}">FAQs</a><br><br>
+        • <a href="{% url 'profile' %}">MY PROFILE</a><br><br>
+        • <a href="{% url 'setting' %}">SETTINGS</a>
+    </div>
+{% endblock %}

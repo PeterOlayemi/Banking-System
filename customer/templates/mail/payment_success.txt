@@ -1,0 +1,23 @@
+{% autoescape off %}
+Dear {{ user.first_name }},
+
+
+You have successfully paid ₦{{bill.amount}} for {{bill.cable.service}}{{bill.electricity.service}} / {{bill.cable.plan}} / {{bill.cable.card_number}}{{bill.electricity.meter_number}}.
+Transaction ID: {{bill.txn_id}}
+Date: {{bill.date}}
+
+Click this link to view transaction:
+http://{{ domain }}/customer/detail/bill/{{bill.pk}}/
+
+
+To unsubscribe from email notifications:
+http://{{ domain }}/customer/setting/
+
+This message was sent to {{user.email}} because you have registered with us.
+If you did not make this transaction, message us - patridgebankgroup@yahoo.com to take neccessary measures.
+
+
+Best Regards,
+Patridge Bank
+{{bill.date.date}}
+{% endautoescape %}  

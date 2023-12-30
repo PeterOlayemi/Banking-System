@@ -1,0 +1,54 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+    <a href="{% url 'seditprofile' %}">Edit Profile</a><hr><br>
+    {% if account.picture %}
+        <div class="center"><img src="{{account.picture.url}}" alt="display picture" style="height: 150px; width: 150px; border-radius: 70px;"></div>
+    {%else%}
+        <form method="post" align="center" enctype="multipart/form-data">
+            {%csrf_token%}
+            {{form}}
+            <input type="submit" value="Add DP" class="btn btn-primary">
+        </form>
+    {%endif%}<br><hr>
+    <p>
+        USER ID<br>
+        {{account.user.user_ID}}
+    </p><hr><br>
+    <div class="flex flex-justify">
+        FIRST NAME<br>
+        {{account.user.first_name|upper}}
+        <div>
+            LAST NAME<br>
+            {{account.user.last_name|upper}}
+        </div>
+    </div><br><hr>
+    <p>
+        MIDDLE NAME<br>
+        {{account.user.middle_name|upper}}
+    </p><hr><br>
+    <p>
+        NATIONALITY<br>
+        {{account.country}}
+    </p><hr>
+    <p>
+        EMAIL<br>
+        {{account.user.email|upper}}
+    </p><hr>
+    <p>
+        PHONE NUMBER<br>
+        {{account.user.phone_number}}
+    </p><hr>
+    <p>
+        ADDRESS<br>
+        {{account.street_address|upper}}, {{account.city|upper}}, {{account.state|upper}} STATE.
+    </p><hr>
+    <p>
+        MARITAL STATUS<br>
+        {{account.marital_status}}
+    </p><hr>
+    <p>
+        ROLE<br>
+        {{account.occupation}}
+    </p>
+{%endblock%}

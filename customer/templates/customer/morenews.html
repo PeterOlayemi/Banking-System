@@ -1,0 +1,27 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <div class="container col-lg-6">
+        <h2 class="center">NEWS ({{post_c}} UNREAD)</h2>
+        <a href="{% url 'customer_home' %}">Back</a><hr><br>
+        {% for post in post %}
+            {% if request.user in post.read.all %}
+                <p>• {{post.title}}<br>
+                <div class="ml-4">{{post.body|slice:50}}...<br>
+                <i>DATE: {{post.date}} <a href="{% url 'detailnews' post.pk %}">read more...</a></i></div></p>
+            {%else%}
+                <p><b>- {{post.title}}</b><br>
+                <div class="ml-4">{{post.body|slice:50}}...<br>
+                <i>DATE: {{post.date}} <a href="{% url 'detailnews' post.pk %}">read more...</a></i></div></p>
+            {%endif%}
+        {% endfor %}<br><br>
+        <div class="flex">
+            {% if post.has_previous %}
+                <a href="?page={{ post.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+            {% endif %}
+            {% if post.has_next %}
+                <a href="?page={{ post.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

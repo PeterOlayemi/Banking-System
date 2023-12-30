@@ -1,0 +1,15 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+<div class="container col-lg-6">
+    <h2 class="center">CHANGE CUSTOMER'S CARD PIN</h2>
+    <h3>{{card.account.account_name}} / {{card.account.account_number}}</h3><br>
+    <a href="{% url 'cardmanage' card.account.pk %}">Back</a><hr><br>
+    <form method="post">
+        {%csrf_token%}
+        NEW PIN: <input type="password" name="new_pin1" maxlength="4" minlength="4" required><br><br>
+        CONFIRM PIN: <input type="password" name="new_pin2" maxlength="4" minlength="4" required><br><br>
+        <div class="right"><input type="submit" value="Done" class="btn btn-primary"></div>
+    </form>
+</div>
+{%endblock%}

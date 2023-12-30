@@ -1,0 +1,23 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<div class="container col-lg-6">
+    <h2 class="center">NEW BILL</h2>
+    <p>MY ACCOUNT: {{post.account_name}} / ₦{{user.balance}}</p>
+    <b>Daily Transaction Limit: <input type="range" min="0" max="{{account_limit}}" value="{{txn_limit}}" disabled> ₦{{txn_limit}} Remaining</b><br><br>
+    <a href="{% url 'newbill' %}">Back</a><hr><br>
+    <form method="post">
+        {%csrf_token%}
+        <p>Service: {{form.service}}</p>
+        <p>Meter Number: {{form.meter_number}}</p>
+        <p>Amount: {{form.amount}}</p>
+        <p>Phone Number: {{form.phone_number}}</p>
+        <div class="flex flex-justify"><div><input type="checkbox" name="saved"> Save Bill</div> <input type="submit" value="Next" class="btn btn-primary"></div>
+    </form>
+</div>
+
+    {% load static %}
+    <script src="{% static 'js/electricityform.js' %}"></script>
+{% endblock %}

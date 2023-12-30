@@ -1,0 +1,56 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+<div class="container col-lg-6">
+    <h2 class="center">LOAN DETAIL</h2>
+    <a href="{{request.META.HTTP_REFERER}}">Back</a><hr><br>
+    <p>ACCOUNT: <a href="{% url 'customerdetail' q=loan.account.account_number %}">{{loan.account.account_name}} / {{loan.account.account_number}}</a></p>
+    <p>AMOUNT: ₦{{loan.amount}}</p>
+    {% if loan.new_amount %}
+        <p>LATEST AMOUNT: ₦{{loan.new_amount}}</p>
+    {%endif%}
+    <p>FOR: {{loan.period}}</p>
+    {% if loan.till %}
+        <p>TILL: {{loan.till}}</p>
+    {%endif%}
+    <p>DATE: {{loan.date}}</p>
+    <p>
+        STATUS:
+        {% if loan.approved == True and loan.paid == True %}
+            Loan Approved And Has Been Returned
+        {% elif loan.approved == True and loan.paid == False %}
+            Loan Approved But Has Not Been Returned
+        {% elif loan.disapproved == True %}
+            Loan Not Approved
+        {% elif loan.approved == False and loan.disapproved == False %}
+            Loan Has Not Yet Been Attended To
+        {%endif%}
+    </p>
+    <p class="right">
+        {% if loan.approved == True and loan.paid == False %}
+            <a class="pay-loan btn btn-primary"
+                data-id="{{ loan.pk }}">
+                Pay Now
+            </a>
+        {% elif loan.approved == False and loan.disapproved == False %}
+            <a id="approve-loan"
+                class="btn btn-success"
+                data-id="{{ loan.pk }}"
+                data-account="{{loan.account.account_name}} / {{loan.account.account_number}}"
+                data-amount="{{loan.amount}}">
+                Approve
+            </a> &nbsp; &nbsp; 
+            <a class="disapprove-button btn btn-danger"
+                data-id="{{ loan.pk }}"
+                data-disapprove-url="{% url 'disapproveloan' %}"
+                data-done-url="{% url 'loanmanage' loan.account.pk %}">
+                Disapprove
+            </a>
+        {%endif%}
+    </p>
+</div>
+
+    {% load static %}
+    <script src="{% static 'js/approve-loan.js' %}"></script>
+    <script src="{% static 'js/pay-loan.js' %}"></script>
+{% endblock %}

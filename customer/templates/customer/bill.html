@@ -1,0 +1,25 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <h2 class="center">BILL</h2>
+    <b>Daily Transaction Limit: <input type="range" min="0" max="{{account_limit}}" value="{{txn_limit}}" disabled> ₦{{txn_limit}} Remaining</b><br><br>
+    <a href="{% url 'newbill' %}">New Bill</a><hr><br><br>
+    <h3>SAVED BILLS</h3><br>
+    <div class="container ml-4">
+        {% for obj in saved %}
+            <p>• <a href="{% url 'detailbill' obj.pk %}">{% if obj.cable %}{{obj.cable.service}}/{{obj.cable.plan}}/AMOUNT: ₦{{obj.amount}}{%endif%}{% if obj.electricity %}{{obj.electricity.service}}/{{obj.electricity.meter_number}}/AMOUNT: ₦{{obj.amount}}{%endif%}</a></p>
+        {%empty%}
+            <p>No Saved Bill</p>
+        {%endfor%}
+        {% if saved %}{% if saved_c > 2 %}<p style="text-align: center;"><a href="{% url 'moresaved' %}">MORE</a></p>{%endif%}{%endif%}
+    </div><hr><br><br>
+    <h3>RECENT BILLS</h3><br>
+    <div class="container ml-4">
+        {% for obj in recent %}
+            <p>• <a href="{% url 'detailbill' obj.pk %}">{% if obj.cable %}{{obj.cable.service}}/{{obj.cable.plan}}/AMOUNT: ₦{{obj.amount}}{%endif%}{% if obj.electricity %}{{obj.electricity.service}}/{{obj.electricity.meter_number}}/AMOUNT: ₦{{obj.amount}}{%endif%}</a></p>
+        {%empty%}
+            <p>No Recent Bill</p>
+        {%endfor%}
+        {% if recent %}{% if recent_c > 4 %}<p style="text-align: center;"><a href="{% url 'morebill' %}">MORE</a></p>{%endif%}{%endif%}
+    </div>
+{% endblock %}

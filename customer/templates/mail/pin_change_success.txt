@@ -1,0 +1,23 @@
+{% autoescape off %}
+Dear {{ user.first_name }},
+
+
+You have successfully changed your Transaction pin.
+Account: {{account.account_name}}/{{account.account_number}}
+Date: {{date}}
+
+
+Check your Account details:
+http://{{ domain }}/customer/profile/
+
+To unsubscribe from email notifications:
+http://{{ domain }}/customer/setting/
+
+This message was sent to {{user.email}} because you have registered with us.
+If you did not make this request, message us - patridgebankgroup@yahoo.com to take neccessary measures.
+
+
+Best Regards,
+Patridge Bank
+{{date}}
+{% endautoescape %}  

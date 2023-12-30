@@ -1,0 +1,109 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+<div class="container col-lg-6">
+    <h2 class="center">TRANSACTION DETAIL</h2>
+    <a href="{% url 'history' account.pk %}">Back</a><hr><br>
+    <p>ACCOUNT: <a href="{% url 'customerdetail' q=account.account_number %}">{{account.account_name}} / {{account.account_number}}</a></p>
+    <p>ID: {{txn.id}}</p>
+    <p>TXN: {{txn.txn}}</p>
+    <p>AMOUNT: ₦{{txn.amount}}</p>
+    <p>BALANCE: ₦{{txn.balance}}</p>
+    <p>DESC_: {{txn.detail}}</p>
+    <p>
+        {% if txn.transfer %}
+            <p>SENDER: {% if txn.transfer.sender.user == account.user %}CUSTOMER ACCOUNT{%else%}{{txn.transfer.sender.account_name}} / {{txn.transfer.sender.account_number}}{%endif%}</p>
+            <p>RECEIVER: {% if txn.transfer.receiver.user == account.user %}CUSTOMER ACCOUNT{%else%}{{txn.transfer.receiver.account_name}} / {{txn.transfer.receiver.account_number}}{%endif%}</p>
+            <p>STATUS: {{txn.transfer.status}}</p>
+            <p>PURPOSE: {{txn.transfer.purpose}}</p>
+        {% elif txn.bill %}
+            {% if txn.bill.cable %}
+                <p>SERVICE: {{txn.bill.cable.service}}</p>
+                <p>PLAN: {{txn.bill.cable.plan}}</p>
+                <p>CARD NUMBER: {{txn.bill.cable.card_number}}</p>
+                <p>EXCHANGE REFERENCE: {{txn.bill.cable.exchange_reference}}</p>
+                <p>CUSTOMER NAME: {{txn.bill.cable.customer_name}}</p>
+                <p>CUSTOMER NUMBER: {{txn.bill.cable.customer_number}}</p>
+                {% if txn.bill.cable.service.name == 'GOTV' or txn.bill.cable.service.name == 'DSTV' %}
+                    <p>CUSTOMER CARE REFERENCE ID: {{txn.bill.cable.customercare_referenceid}}</p>
+                    <p>AUDIT REFERENCE NUMBER: {{txn.bill.cable.audit_referencenumber}}</p>
+                {%endif%}
+            {%endif%}
+            {% if txn.bill.electricity %}
+                <p>SERVICE: {{txn.bill.electricity.service}}</p>
+                {% if txn.bill.electricity.service.name == 'Eko Electricity Prepaid' %}
+                    <p>CUSTOMER NAME: {{txn.bill.electricity.customer_name}}</p>
+                    <p>CUSTOMER ADDRESS: {{txn.bill.electricity.customer_address}}</p>
+                    <p>CUSTOMER DISTRICT: {{txn.bill.electricity.customer_district}}</p>
+                    <p>BSST TOKEN VALUE: {{txn.bill.electricity.bsst_tokenvalue}}</p>
+                    <p>STANDARD TOKEN VALUE: {{txn.bill.electricity.standard_tokenvalue}}</p>
+                    <p>UTILITY NAME: {{txn.bill.electricity.utility_name}}</p>
+                    <p>EXCHANGE REFERENCE: {{txn.bill.electricity.exchange_reference}}</p>
+                {%endif%}
+                {% if txn.bill.electricity.service.name == 'Abuja Electricity Prepaid' %}
+                    <p>CUSTOMER NAME: {{txn.bill.electricity.customer_name}}</p>
+                    <p>CUSTOMER ADDRESS: {{txn.bill.electricity.customer_address}}</p>
+                    <p>CUSTOMER REFERENCE: {{txn.bill.electricity.customer_reference}}</p>
+                    <p>TOKEN: {{txn.bill.electricity.token}}</p>
+                    <p>RECEIPT NUMBER: {{txn.bill.electricity.receipt_number}}</p>
+                    <p>REFERENCE: {{txn.bill.electricity.exchange_reference}}</p>
+                {%endif%}
+                {% if txn.bill.electricity.service.name == 'Kaduna Electricity Prepaid' %}
+                    <p>CUSTOMER NAME: {{txn.bill.electricity.customer_name}}</p>
+                    <p>CUSTOMER ADDRESS: {{txn.bill.electricity.customer_address}}</p>
+                    <p>CUSTOMER PHONE NUMBER: {{txn.bill.electricity.phone_number}}</p>
+                    <p>TARIFF: {{txn.bill.electricity.tariff_code}}</p>
+                    <p>TOKEN: {{txn.bill.electricity.token}}</p>
+                    <p>UNITS: {{txn.bill.electricity.unit}}</p>
+                    <p>RECEIPT NUMBER: {{txn.bill.electricity.receipt_number}}</p>
+                    <p>EXCHANGE REFERENCE: {{txn.bill.electricity.exchange_reference}}</p>
+                {%endif%}
+                {% if txn.bill.electricity.service.name == 'Ibadan Electricity Prepaid' %}
+                    <p>CUSTOMER NAME: {{txn.bill.electricity.customer_name}}</p>
+                    <p>CUSTOMER ADDRESS: {{txn.bill.electricity.customer_address}}</p>
+                    <p>TARIFF: {{txn.bill.electricity.tariff_code}}</p>
+                    <p>TOKEN: {{txn.bill.electricity.token}}</p>
+                    <p>RESET TOKEN: {{txn.bill.electricity.bsst_tokenvalue}}</p>
+                    <p>CUSTOMER REFERENCE: {{txn.bill.electricity.customerReference}}</p>
+                    <p>EXCHANGE REFERENCE: {{txn.bill.electricity.exchange_reference}}</p>
+                {%endif%}
+                <p>METER NUMBER: {{txn.bill.electricity.meter_number}}</p>
+            {%endif%}
+            <p>STATUS: {{txn.bill.status}}</p>
+        {% elif txn.topup %}
+            {% if txn.topup.airtime %}
+                <p>SERVICE: {{txn.topup.airtime.service}}</p>
+            {%endif%}
+            {% if txn.topup.data %}
+                <p>SERVICE: {{txn.topup.data.service}}</p>
+                <p>PLAN: {{txn.topup.data.plan}}</p>
+            {%endif%}
+            <p>PHONE NUMBER: {{txn.topup.phone_number}}</p>
+            <p>STATUS: {{txn.topup.status}}</p>
+        {% elif txn.loan %}
+            {% if txn.loan.new_amount %}
+                <p>LATEST AMOUNT: ₦{{txn.loan.new_amount}}</p>
+            {%endif%}
+            <p>FOR: {{txn.loan.period}}</p>
+            {% if txn.loan.till %}
+                <p>TILL: {{txn.loan.till}}</p>
+            {%endif%}
+            <p>
+                STATUS:
+                {% if txn.loan.approved == True and txn.loan.paid == True %}
+                    Loan Approved And Has Been Returned
+                {% elif txn.loan.approved == True and txn.loan.paid == False %}
+                    Loan Approved But Has Not Been Returned
+                {% elif txn.loan.disapproved == True %}
+                    Loan Not Approved
+                {% elif txn.loan.approved == False and txn.loan.disapproved == False %}
+                    Loan Has Not Yet Been Attended To
+                {%endif%}
+            </p>
+        {%endif%}
+    </p>
+    <p>DATE: <i>{{txn.date}}</i></p>
+
+
+</div>
+{% endblock %}

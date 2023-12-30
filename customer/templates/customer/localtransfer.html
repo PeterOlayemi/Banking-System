@@ -1,0 +1,17 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+<h2 class="center">MAKE TRANSFER</h2><br>
+<div class="container col-lg-8">
+    <p>MY ACCOUNT: {{obj.account_name}} / ₦{{user.balance}}</p>
+    <b>Daily Transaction Limit: <input type="range" min="0" max="{{account_limit}}" value="{{txn_limit}}" disabled> ₦{{txn_limit}} Remaining</b><br><br>
+    <a href="{% url 'transfer' %}">Back</a><br><hr><br>
+    <form method="post">
+        {%csrf_token%}
+        <div class="flex flex-justify"><div>RECEIVER'S ACCOUNT NUMBER: <input type="number" name="receiver" id="receiver" required></div> <div><input type="checkbox" name="add"> Add To Beneficiaries</div></div><br>
+        AMOUNT: <input type="number" name="amount" id="amount" required><br><br>
+        <div class="flex flex-justify"><div>PURPOSE(Optional): <input type="text" name="purpose" id="purpose" maxlength="19"></div>
+        <input type="submit" value="Next" class="right btn btn-primary"></div>
+    </form>
+</div>
+{% endblock %}

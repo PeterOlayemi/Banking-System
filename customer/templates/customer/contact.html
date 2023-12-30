@@ -1,0 +1,10 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <h2 class="center">CONTACT US</h2>
+    <div class="container col-lg-6">
+        <a href="{% url 'more' %}">Back</a><hr><br>
+        <p>You can contact us by visiting any of our branches <a href="{% url 'locate' %}">HERE</a> or you can send us a mail - ubagroupcfc@yahoo.com.</p>
+        <p>Chat with a Patridge Bank staff <a href="{% url 'support' %}">HERE</a></p>
+    </div>
+{%endblock%}

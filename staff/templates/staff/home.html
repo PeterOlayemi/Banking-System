@@ -1,0 +1,69 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 order-md-last">
+        <h3>Quick Links</h3><hr>
+        <div class="ml-4">
+            <a href="{% url 'all_support' %}">{% if support_count > 0 %}<b>Answer Support<sup style="font-size: medium;">({{support_count}} Not Answered)</sup></b>{%else%}Answer Support{%endif%}</a><br><br>
+            <a href="{% url 'scalculate' %}">Interest Calculator</a><hr><br>
+            <a href="{% url 'sprofile' %}">My Profile</a><br><br>
+            <a href="{% url 'schangeuserid' %}">Change My User ID</a><br><br>
+            <a href="{% url 'staff_password_change' %}">Change My Password</a><br><br>
+            <a class="logout"
+                data-logout-url="{% url 'staff_logout' %}"
+                data-success-url="{% url 'staff_login' %}">
+                Log Out
+            </a><br><br><br><br>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h2>Welcome To Patridge Bank Staff Dashboard</h2>
+        <p>Explore the rich history of Patridge Bank, our commitment to excellence, and how our dedicated staff ensures top-notch customer service.</p>
+        {% load static %}
+        <img src="{% static 'img/uba_building1.jpeg' %}" alt="Patridge Bank Building1" class="img-fluid" height="400" width="400">
+        <br><br>
+
+        <h3>A Legacy of Excellence</h3>
+        <p>Patridge Bank (Patridge Bank) has been a cornerstone of Africa's financial landscape since its inception in 1961. Our journey has been marked by innovation, resilience, and a steadfast commitment to our customers' success.</p>
+        <p>From our humble beginnings to becoming a pan-African banking powerhouse, Patridge Bank's story is one of growth, transformation, and impact.</p>
+
+        <h3>Our Core Values</h3>
+        <p>At Patridge Bank, we're guided by a set of core values that define who we are:</p>
+        <ul>
+            <li>Integrity: We uphold the highest ethical standards in all our interactions.</li>
+            <li>Excellence: We strive for excellence in every aspect of our operations.</li>
+            <li>Customer Focus: Our customers are at the center of everything we do.</li>
+            <li>Innovation: We embrace innovation to drive positive change and growth.</li>
+            <li>Teamwork: We collaborate to achieve collective success.</li>
+        </ul>
+        <img src="{% static 'img/uba1.png' %}" alt="Patridge Bank Logo" class="img-fluid" height="300" width="400">
+        <br><br>
+
+        <h3>Comprehensive Services</h3>
+        <p>Patridge Bank offers a wide range of financial services to cater to the diverse needs of our customers:</p>
+        <ul>
+            <li>Personal Banking: From savings accounts to loans, we're here to help you achieve your financial goals.</li>
+            <li>Corporate Banking: Our tailored solutions support businesses in various industries.</li>
+            <li>Investment Advisory: Leverage our expertise for smart investment decisions.</li>
+            <li>International Banking: Seamlessly conduct transactions across borders.</li>
+        </ul>
+
+        <h3>Meet Our Staff</h3>
+        <p>Peter Olayemi is a shining example of Patridge Bank's commitment to excellence. As a Senior Developer, he's dedicated to creating customer-friendly sites in Patridge Bank.</p>
+        <ul>
+            <li>Name: Peter Olayemi</li>
+            <li>Position: Senior Developer</li>
+            <li>User ID: UBA001</li>
+            <li>Contact Email: olayemipeter@Patridge Bank.com</li>
+            <li>Contact Phone: +1 (555) 123-4567</li>
+        </ul>
+        <img src="{% static 'img/uba_building2.jpeg' %}" alt="Patridge Bank Building2" class="img-fluid" height="400" width="400">
+        <br><br>
+
+        <h3>What Our Customers Say</h3>
+        <p>"Patridge Bank has been my financial partner for over a decade. Their commitment to customer satisfaction sets them apart. From simple transactions to complex financial advice, Patridge Bank delivers."</p>
+        <p>"Peter Olayemi's tech skills have been invaluable to my customer experience in all Patridge Bank's tech. His expertise and personalized approach make Patridge Bank my go-to choice for financial services."</p>
+    </div>
+</div>
+{% endblock %}

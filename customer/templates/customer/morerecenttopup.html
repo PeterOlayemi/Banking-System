@@ -1,0 +1,28 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <div class="container col-lg-6">
+        <h2 class="center">TOPUP HISTORY</h2>
+        <a href="{% url 'topup' %}">Back</a><hr><br>
+        {% for obj in recenttop %}
+            <p>
+                • <a href="{% url 'detailtop' obj.pk %}">
+                    {% if obj.airtime %}
+                        AIRTIME: {{obj.airtime.service}}/
+                    {%else%}
+                        DATA: {{obj.data.service}}/{{obj.data.plan}}/
+                    {%endif%}
+                    AMOUNT: ₦{{obj.amount}}/{{obj.phone_number}}
+                </a>
+            </p><br>
+        {%endfor%}<br>
+        <div class="flex">
+            {% if recenttop.has_previous %}
+                <a href="?page={{ recenttop.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+            {% endif %}
+            {% if recenttop.has_next %}
+                <a href="?page={{ recenttop.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

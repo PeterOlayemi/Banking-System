@@ -1,0 +1,26 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+<div class="container col-lg-6">
+    <h2 class="center">REPEAT TRANSACTION</h2>
+    <p>MY ACCOUNT: {{post.account_name}} / ₦{{user.balance}}</p>
+    <b>Daily Transaction Limit: <input type="range" min="0" max="{{account_limit}}" value="{{txn_limit}}" disabled> ₦{{txn_limit}} Remaining</b><br><br>
+    <a href="{% url 'detailtop' repeatairtime.pk %}">Back</a><hr><br>
+    <form method="post">
+        {%csrf_token%}
+        SERVICE: <input type="button" value="{{repeatairtime.service}} ({{airtime_status}})"><br><br>
+        AMOUNT: <input type="number" value="{{repeatairtime.amount}}" name="amount" id="amount" required><br><br>
+        PHONE NUMBER: <input type="number" value="{{repeatairtime.phone_number}}" name="phone_number" id="phone_number" required><br><br>
+        <div class="flex flex-justify">
+            <div>
+                {% if topup.saved == True %}
+                    This Bill Has Been Saved Already, Continue
+                {%else%}
+                    <input type="checkbox" name="saved"> Save TopUp
+                {%endif%}
+            </div>
+            <input type="submit" value="Next" class="btn btn-primary">
+        </div>
+    </form>
+</div>
+{% endblock %}

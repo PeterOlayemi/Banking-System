@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>Patridge Bank</title>
+   
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/light.css' %}" id="theme-style">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hover.css' %}">
+</head>
+<body class="pad">
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="navbar-brand flex">
+        <img src="{% static 'img/uba2.png' %}" alt="bank-logo" width="100" height="50">
+        <h2 class="hover" data-desc="Welcome To Patridge Bank">Patridge Bank</h2>
+    </div>
+    <div class="spacer"></div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="{% url 'customer_home' %}" class="nav-link hover" data-desc="Access Your Account Overview">DashBoard</a>
+            </li>
+            <li class="nav-item">
+                {% if message_c == 0 %}
+                    <a href="{% url 'message' %}" class="nav-link hover" data-desc="Messages From Patridge Bank">My Messages</a>
+                {%else%}
+                    <a href="{% url 'message' %}" class="nav-link hover" data-desc="Messages From Patridge Bank; You Have New Messages"><b>My Messages<sup class="message badge bg-danger">({{message_c}})</sup></b></a>
+                {%endif%}
+            </li>
+        </ul>
+        <div class="spacer"></div>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="{% url 'transfer' %}" class="nav-link hover" data-desc="Send Money To People">Transfer</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'bill' %}" class="nav-link hover" data-desc="Pay Cable or Electricity Bills">Bill</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'topup' %}" class="nav-link hover" data-desc="Buy Airtime/Data">Top Up</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'loan' %}" class="nav-link hover" data-desc="Access Your Loan Overview">Loan Management</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'more' %}" class="nav-link hover" data-desc="Other Services and Account Settings">More</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <div class="nav-link hover" data-desc="Toggle Light/Dark Theme">Toggle Theme: <input type="checkbox" id="dark-mode-toggle"></div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- For Messages -->
+{% if messages %}
+<div id="message-container">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{message|safe}}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}<br>
+
+<!-- Page Content -->
+<div class="container mt-4" style="overflow-x: auto;">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<footer><hr><br><br><p class="center">&copy;Patridge Bank</p></footer>
+
+<script src="{% static 'js/toggle_mode.js' %}"></script>
+<script>
+    const storedTheme = localStorage.getItem('preferredTheme');
+    if (storedTheme) {
+        document.querySelector('#dark-mode-toggle').checked = storedTheme === 'dark.css';
+    }
+</script>
+
+<!-- Bootstrap JS and Custom JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+<script src="{% static 'js/confirm.js' %}"></script>
+<script src="{% static 'js/hover.js' %}"></script>
+
+</body>
+</html>

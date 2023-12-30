@@ -1,0 +1,18 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <h2 class="center">CONFIRM TRANSFER</h2>
+    <div class="container col-lg-6">
+        <form method="post">
+            {% csrf_token %}
+            <p>TXN: {{transfer.txn_id}}</p>
+            <p>SENDER: {{transfer.sender.account_name}}/{{transfer.sender.account_number}}</p>
+            <p>RECEIVER: {{transfer.receiver.account_name}}</p>
+            <p>ACCOUNT NUMBER: {{transfer.receiver.account_number}}</p>
+            <p>AMOUNT: ₦{{transfer.amount}}</p>
+            {% if transfer.purpose %}<p>PURPOSE: {{transfer.purpose}}</p>{%endif%}
+            <p>DATE: {{transfer.date}}</p>
+            <input type="submit" value="Confirm" class="btn btn-primary">&nbsp;&nbsp;<a href="{{request.META.HTTP_REFERER}}" class="btn btn-danger">Cancel</a>
+        </form>
+    </div>
+{%endblock%}

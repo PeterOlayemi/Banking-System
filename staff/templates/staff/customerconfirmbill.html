@@ -1,0 +1,98 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+{% if bill.cable %}
+    <h2 class="center">CONFIRM BILL</h2>
+    <div class="container col-lg-6">
+        <form method="post">
+            {%csrf_token%}
+            {% if bill.cable.service.name == 'GOTV' or bill.cable.service.name == 'DSTV' %}
+                <p>TXN: {{bill.txn_id}}</p>
+                <p>SERVICE: {{bill.cable.service}}</p>
+                <p>CUSTOMER NAME: {{name}}</p>
+                <p>CUSTOMER TYPE: {{customerType}}</p>
+                <p>CUSTOMER NUMBER: {{customerNumber}}</p>
+                <p>OLD PLAN: {{old_plan}}</p>
+                <p>OLD PLAN AMOUNT: ₦{{old_amount}}</p>
+                <p>DUE DATE: {{dueDate}}</p>
+                <p>ACCOUNT STATUS: {{accountStatus}}</p>
+                <p>INVOICE PERIOD: {{invoicePeriod}}</p>
+                <p>CARD NUMBER: {{bill.cable.card_number}}</p>
+                <p>NEW PLAN: {{new_plan}}</p>
+                <p>NEW PLAN AMOUNT: ₦{{new_amount}}</p>
+            {% elif bill.cable.service.name == 'Startimes' %}
+                <p>TXN: {{bill.txn_id}}</p>
+                <p>SERVICE: {{bill.cable.service}}</p>
+                <p>CUSTOMER NAME: {{name}}</p>
+                <p>CUSTOMER TYPE: {{customerType}}</p>
+                <p>CUSTOMER NUMBER: {{customerNumber}}</p>
+                <p>OLD PLAN: {{old_plan}}</p>
+                <p>OLD PLAN AMOUNT: ₦{{old_amount}}</p>
+                <p>RETURN CODE: {{returnCode}}</p>
+                <p>CARD NUMBER: {{bill.cable.card_number}}</p>
+                <p>NEW PLAN: {{new_plan}}</p>
+                <p>NEW PLAN AMOUNT: ₦{{new_amount}}</p>
+            {%endif%}
+            <p>DATE: {{bill.date}}</p>
+            <input type="submit" value="Confirm" class="btn btn-primary">&nbsp;&nbsp;<a href="{% url 'customercable' bill.account.pk %}" class="btn btn-danger">Cancel</a>
+        </form>
+    </div>
+{%endif%}
+{% if bill.electricity %}
+    <h2 class="center">CONFIRM BILL</h2>
+    <div class="container col-lg-6">
+        <form method="post">
+            {%csrf_token%}
+            {% if bill.electricity.service.name == 'Eko Electricity Prepaid' %}
+                <p>TXN: {{bill.txn_id}}</p>
+                <p>SERVICE: {{bill.electricity.service}}</p>
+                <p>CUSTOMER NAME: {{name}}</p>
+                <p>CUSTOMER ADDRESS: {{customerAddress}}</p>
+                <p>CUSTOMER DISTRICT: {{customerDistrict}}</p>
+                <p>STATUS: {{status}}</p>
+                <p>RESPONSE MESSAGE: {{responseMessage}}</p>
+                <p>METER NUMBER: {{bill.electricity.meter_number}}</p>
+                <p>AMOUNT: ₦{{amount}}</p>
+            {% elif bill.electricity.service.name == 'Abuja Electricity Prepaid' %}
+                <p>TXN: {{bill.txn_id}}</p>
+                <p>SERVICE: {{bill.electricity.service}}</p>
+                <p>CUSTOMER NAME: {{name}}</p>
+                <p>CUSTOMER ADDRESS: {{customerAddress}}</p>
+                <p>CUSTOMER REFERENCE: {{customerReference}}</p>
+                <p>MINIMUM VENDOR AMOUNT: ₦{{minimumVend}}</p>
+                <p>TARIFF: {{tariff}}</p>
+                <p>RESPONSE MESSAGE: {{responseMessage}}</p>
+                <p>METER NUMBER: {{bill.electricity.meter_number}}</p>
+                <p>AMOUNT: ₦{{amount}}</p>
+            {% elif bill.electricity.service.name == 'Kaduna Electricity Prepaid' %}
+                <p>TXN: {{bill.txn_id}}</p>
+                <p>SERVICE: {{bill.electricity.service}}</p>
+                <p>CUSTOMER NAME: {{name}}</p>
+                <p>CUSTOMER ADDRESS: {{customerAddress}}</p>
+                <p>CUSTOMER PHONE NUMBER: {{bill.electricity.phone_number}}</p>
+                <p>MINIMUM AMOUNT: ₦{{minimumVend}}</p>
+                <p>OUTSTANDING AMOUNT: ₦{{outstandingAmount}}</p>
+                <p>FREE UNITS: {{freeUnits}}</p>
+                <p>TARIFF: {{tariff}}</p>
+                <p>RESPONSE MESSAGE: {{responseMessage}}</p>
+                <p>METER NUMBER: {{bill.electricity.meter_number}}</p>
+                <p>AMOUNT: ₦{{amount}}</p>
+            {% elif bill.electricity.service.name == 'Ibadan Electricity Prepaid' %}
+                <p>TXN: {{bill.txn_id}}</p>
+                <p>SERVICE: {{bill.electricity.service}}</p>
+                <p>CUSTOMER NAME: {{name}}</p>
+                <p>CUSTOMER ADDRESS: {{customerAddress}}</p>
+                <p>MINIMUM AMOUNT: ₦{{minimumVend}}</p>
+                <p>OUTSTANDING AMOUNT: ₦{{outstandingAmount}}</p>
+                <p>FREE UNITS: {{freeUnits}}</p>
+                <p>TARIFF: {{tariff}}</p>
+                <p>RESPONSE MESSAGE: {{responseMessage}}</p>
+                <p>METER NUMBER: {{bill.electricity.meter_number}}</p>
+                <p>AMOUNT: ₦{{amount}}</p>
+            {%endif%}
+            <p>DATE: {{bill.date}}</p>
+            <input type="submit" value="Confirm" class="btn btn-primary">&nbsp;&nbsp;<a href="{% url 'customerelectricity' bill.account.pk %}" class="btn btn-danger">Cancel</a>
+        </form>
+    </div>
+{%endif%}
+{% endblock %}

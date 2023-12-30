@@ -1,0 +1,19 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+<div class="container col-lg-6">
+    <h2 class="center">NEW TOPUP (DATA)</h2>
+    <p>MY ACCOUNT: {{post.account_name}} / ₦{{user.balance}}</p>
+    <b>Daily Transaction Limit: <input type="range" min="0" max="{{account_limit}}" value="{{txn_limit}}" disabled> ₦{{txn_limit}} Remaining</b><br><br>
+    <a href="{% url 'newtop' %}">Back</a><hr><br>
+    <form method="post">
+        {%csrf_token%}
+        {{form.as_p}}
+        <p>Amount: <span id="plan-amount">₦0.00</span></p>
+        <div class="flex flex-justify"><div><input type="checkbox" name="saved"> Save TopUp</div> <input type="submit" value="Next" class="btn btn-primary"></div>
+    </form>
+</div>
+
+    {% load static %}
+    <script src="{% static 'js/dataform.js' %}"></script>
+{% endblock %}

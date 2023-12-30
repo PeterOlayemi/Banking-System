@@ -1,0 +1,23 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+    <h2 class="center">MANAGE CUSTOMER'S BENEFICIARY</h2>
+    <h3>{{account.account_name}} / {{account.account_number}}</h3><br>
+    <a href="{% url 'customerdetail' account.account_number %}">Back</a> &nbsp; &nbsp; <a href="{% url 'addbene' account.pk %}">Add Beneficiary</a><hr><br>
+    {% for obj in beneficiary %}
+        <p>{{forloop.counter}} • {{obj.beneficiary.account_name}}/{{obj.beneficiary.account_number}}<br>
+        <div class="ml-4">
+            <a href="{% url 'transfertocustomerbeneficiary' account.pk obj.id %}" class="btn btn-primary">Send Money</a>
+            <button class="btn btn-danger delete-button"
+                    data-id="{{ obj.pk }}"
+                    data-name="{{ obj.beneficiary.account_name|title }}"
+                    data-number="{{ obj.beneficiary.account_number }}"
+                    data-remove-url="{% url 'removebene' account.pk %}"
+                    data-exit-url="{% url 'managebene' account.pk %}">
+                Remove
+            </button>
+        </div><br><br>
+    {%empty%}
+        <p>Customer Has No Beneficiary At The Moment</p>
+    {%endfor%}
+{%endblock%}

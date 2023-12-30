@@ -1,0 +1,365 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+    {% if allloan %}
+        <div class="flex flex-justify">
+            <h2 class="center">ALL LOANS</h2>
+            <form method="post">
+                {%csrf_token%}
+                <input type="text" required maxlength="10" minlength="10" name="q" placeholder="Account Number To Search Loan">
+                <input type="submit" value="Search" class="btn btn-info">
+            </form>
+        </div><br>
+        <a href='{% url "generalloanmanage" %}'>Back</a><hr><br>
+        {%if request.method == 'POST' %}
+            <h3>SEARCH RESULTS</h3><br><br>
+            {% if all_loan %}
+            <div style="max-width: 100%; overflow-x: auto;">
+                <table border="1" cellspacing="0">
+                    <tr>
+                        <th>DATE</th>
+                        <th>ACCOUNT</th>
+                        <th>AMOUNT</th>
+                        <th>LATEST AMOUNT</th>
+                        <th>FOR</th>
+                        <th>TILL</th>
+                        <th>STATUS</th>
+                        <th>ACTION</th>
+                    </tr>
+                    {% for data in all_loan %}
+                    <tr>
+                        <td>{{data.date}}</td>
+                        <td><a href="{% url 'customerdetail' q=data.account.account_number %}">{{data.account.account_name}}/{{data.account.account_number}}</a></td>
+                        <td>₦{{data.amount}}</td>
+                        <td>₦{{data.new_amount}}</td>
+                        <td>{{data.period}}</td>
+                        <td>{{data.till}}</td>
+                        <td>
+                            {% if data.approved == True and data.paid == True %}
+                                Loan Approved And Has Been Returned
+                            {% elif data.approved == True and data.paid == False %}
+                                Loan Approved But Has Not Been Returned
+                            {% elif data.disapproved == True %}
+                                Loan Not Approved
+                            {% elif data.approved == False and data.disapproved == False %}
+                                Loan Has Not Yet Been Attended To
+                            {%endif%}
+                        </td>
+                        <td><a href="{% url 'loanmanagedetail' data.pk %}" class="btn btn-info">View Detail</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div><br><br>
+            <div class="flex">
+                {% if all_loan.has_previous %}
+                    <a href="?page={{ all_loan.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+                {% endif %}
+                {% if all_loan.has_next %}
+                    <a href="?page={{ all_loan.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+                {% endif %}
+            </div>
+            {%else%}
+                <p>No Loan Connected To The Account Inputted</p>
+            {%endif%}
+        {%else%}
+            {% if all_loan %}
+            <div style="max-width: 100%; overflow-x: auto;">
+                <table border="1" cellspacing="0">
+                    <tr>
+                        <th>DATE</th>
+                        <th>ACCOUNT</th>
+                        <th>AMOUNT</th>
+                        <th>LATEST AMOUNT</th>
+                        <th>FOR</th>
+                        <th>TILL</th>
+                        <th>STATUS</th>
+                        <th>ACTION</th>
+                    </tr>
+                    {% for data in all_loan %}
+                    <tr>
+                        <td>{{data.date}}</td>
+                        <td><a href="{% url 'customerdetail' q=data.account.account_number %}">{{data.account.account_name}}/{{data.account.account_number}}</a></td>
+                        <td>₦{{data.amount}}</td>
+                        <td>₦{{data.new_amount}}</td>
+                        <td>{{data.period}}</td>
+                        <td>{{data.till}}</td>
+                        <td>
+                            {% if data.approved == True and data.paid == True %}
+                                Loan Approved And Has Been Returned
+                            {% elif data.approved == True and data.paid == False %}
+                                Loan Approved But Has Not Been Returned
+                            {% elif data.disapproved == True %}
+                                Loan Not Approved
+                            {% elif data.approved == False and data.disapproved == False %}
+                                Loan Has Not Yet Been Attended To
+                            {%endif%}
+                        </td>
+                        <td><a href="{% url 'loanmanagedetail' data.pk %}" class="btn-info btn">View Detail</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div><br><br>
+            <div class="flex">
+                {% if all_loan.has_previous %}
+                    <a href="?page={{ all_loan.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+                {% endif %}
+                {% if all_loan.has_next %}
+                    <a href="?page={{ all_loan.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+                {% endif %}
+            </div>
+            {%else%}
+                <p>No Loan History</p>
+            {%endif%}
+        {%endif%}
+    {% elif allrequested %}
+        <div class="flex flex-justify">
+            <h2 class="center">LOANS REQUEST AWAITING RESPONSE</h2>
+            <form method="post">
+                {%csrf_token%}
+                <input type="text" required maxlength="10" minlength="10" name="q" placeholder="Account Number To Search Loan">
+                <input type="submit" value="Search" class="btn btn-info">
+            </form>
+        </div><br>
+        <a href='{% url "generalloanmanage" %}'>Back</a><hr><br>
+        {%if request.method == 'POST' %}
+            <h3>SEARCH RESULTS</h3><br><br>
+            {% if requested %}
+            <div style="max-width: 100%; overflow-x: auto;">
+                <table border="1" cellspacing="0">
+                    <tr>
+                        <th>DATE</th>
+                        <th>ACCOUNT</th>
+                        <th>AMOUNT</th>
+                        <th>FOR</th>
+                        <th>ACTION</th>
+                    </tr>
+                    {% for data in requested %}
+                    <tr>
+                        <td>{{data.date}}</td>
+                        <td><a href="{% url 'customerdetail' q=data.account.account_number %}">{{data.account.account_name}}/{{data.account.account_number}}</a></td>
+                        <td>₦{{data.amount}}</td>
+                        <td>{{data.period}}</td>
+                        <td><a href="{% url 'loanmanagedetail' data.pk %}" class="btn btn-info">View Detail</a></td>
+                    </tr>
+                {% endfor %}
+                </table>
+            </div><br><br>
+            <div class="flex">
+                {% if requested.has_previous %}
+                    <a href="?page={{ requested.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+                {% endif %}
+                {% if requested.has_next %}
+                    <a href="?page={{ requested.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+                {% endif %}
+            </div>
+            {%else%}
+                <p>No Loan Request Connected To The Account Inputted</p>
+            {%endif%}
+        {%else%}
+            {% if requested %}
+            <div style="max-width: 100%; overflow-x: auto;">
+                <table border="1" cellspacing="0">
+                    <tr>
+                        <th>DATE</th>
+                        <th>ACCOUNT</th>
+                        <th>AMOUNT</th>
+                        <th>FOR</th>
+                        <th>ACTION</th>
+                    </tr>
+                    {% for data in requested %}
+                    <tr>
+                        <td>{{data.date}}</td>
+                        <td><a href="{% url 'customerdetail' q=data.account.account_number %}">{{data.account.account_name}}/{{data.account.account_number}}</a></td>
+                        <td>₦{{data.amount}}</td>
+                        <td>{{data.period}}</td>
+                        <td><a href="{% url 'loanmanagedetail' data.pk %}" class="btn btn-info">View Detail</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div><br><br>
+            <div class="flex">
+                {% if requested.has_previous %}
+                    <a href="?page={{ requested.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+                {% endif %}
+                {% if requested.has_next %}
+                    <a href="?page={{ requested.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+                {% endif %}
+            </div>
+            {%else%}
+                <p>No Loan Request</p>
+            {%endif%}
+        {%endif%}
+    {% elif valid_loan %}
+        <div class="flex flex-justify">
+            <h2 class="center">UNPAID LOANS BUT STILL VALID</h2>
+            <form method="post">
+                {%csrf_token%}
+                <input type="text" required maxlength="10" minlength="10" name="q" placeholder="Account Number To Search Loan">
+                <input type="submit" value="Search" class="btn btn-info">
+            </form>
+        </div><br>
+        <a href='{% url "generalloanmanage" %}'>Back</a><hr><br>
+        {%if request.method == 'POST' %}
+            <h3>SEARCH RESULTS</h3><br><br>
+            {% if valid_loan_object %}
+            <div style="max-width: 100%; overflow-x: auto;">
+                <table border="1" cellspacing="0">
+                    <tr>
+                        <th>DATE</th>
+                        <th>ACCOUNT</th>
+                        <th>AMOUNT</th>
+                        <th>LATEST AMOUNT</th>
+                        <th>FOR</th>
+                        <th>TILL</th>
+                        <th>ACTION</th>
+                    </tr>
+                    {% for data in valid_loan_object %}
+                    <tr>
+                        <td>{{data.date}}</td>
+                        <td><a href="{% url 'customerdetail' q=data.account.account_number %}">{{data.account.account_name}}/{{data.account.account_number}}</a></td>
+                        <td>₦{{data.amount}}</td>
+                        <td>₦{{data.new_amount}}</td>
+                        <td>{{data.period}}</td>
+                        <td>{{data.till}}</td>
+                        <td><a href="{% url 'loanmanagedetail' data.pk %}" class="btn btn-info">View Detail</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div><br><br>
+            <div class="flex">
+                {% if valid_loan_object.has_previous %}
+                    <a href="?page={{ valid_loan_object.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+                {% endif %}
+                {% if valid_loan_object.has_next %}
+                    <a href="?page={{ valid_loan_object.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+                {% endif %}
+            </div>
+            {%else%}
+                <p>No Unpaid Loan That Is Still Valid Connected To The Account Inputted</p>
+            {%endif%}
+        {%else%}
+            {% if valid_loan_object %}
+            <div style="max-width: 100%; overflow-x: auto;">
+                <table border="1" cellspacing="0">
+                    <tr>
+                        <th>DATE</th>
+                        <th>ACCOUNT</th>
+                        <th>AMOUNT</th>
+                        <th>LATEST AMOUNT</th>
+                        <th>FOR</th>
+                        <th>TILL</th>
+                        <th>ACTION</th>
+                    </tr>
+                    {% for data in valid_loan_object %}
+                    <tr>
+                        <td>{{data.date}}</td>
+                        <td><a href="{% url 'customerdetail' q=data.account.account_number %}">{{data.account.account_name}}/{{data.account.account_number}}</a></td>
+                        <td>₦{{data.amount}}</td>
+                        <td>₦{{data.new_amount}}</td>
+                        <td>{{data.period}}</td>
+                        <td>{{data.till}}</td>
+                        <td><a href="{% url 'loanmanagedetail' data.pk %}" class="btn btn-info">View Detail</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div><br><br>
+            <div class="flex">
+                {% if valid_loan_object.has_previous %}
+                    <a href="?page={{ valid_loan_object.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+                {% endif %}
+                {% if valid_loan_object.has_next %}
+                    <a href="?page={{ valid_loan_object.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+                {% endif %}
+            </div>
+            {%else%}
+                <p>No Unpaid Loan That Is Still Valid</p>
+            {%endif%}
+        {%endif%}
+    {% elif in_debt %}
+        <div class="flex flex-justify">
+            <h2 class="center">UNPAID LOANS AND NOT VALID</h2>
+            <form method="post">
+                {%csrf_token%}
+                <input type="text" required maxlength="10" minlength="10" name="q" placeholder="Account Number To Search Loan">
+                <input type="submit" value="Search" class="btn btn-info">
+            </form>
+        </div><br>
+        <a href='{% url "generalloanmanage" %}'>Back</a><hr><br>
+        {%if request.method == 'POST' %}
+            <h3>SEARCH RESULTS</h3><br><br>
+            {% if in_debt_object %}
+            <div style="max-width: 100%; overflow-x: auto;">
+                <table border="1" cellspacing="0">
+                    <tr>
+                        <th>DATE</th>
+                        <th>ACCOUNT</th>
+                        <th>AMOUNT</th>
+                        <th>LATEST AMOUNT</th>
+                        <th>FOR</th>
+                        <th>TILL</th>
+                        <th>ACTION</th>
+                    </tr>
+                    {% for data in in_debt_object %}
+                    <tr>
+                        <td>{{data.date}}</td>
+                        <td><a href="{% url 'customerdetail' q=data.account.account_number %}">{{data.account.account_name}}/{{data.account.account_number}}</a></td>
+                        <td>₦{{data.amount}}</td>
+                        <td>₦{{data.new_amount}}</td>
+                        <td>{{data.period}}</td>
+                        <td>{{data.till}}</td>
+                        <td><a href="{% url 'loanmanagedetail' data.pk %}" class="btn btn-info">View Detail</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div><br><br>
+            <div class="flex">
+                {% if in_debt_object.has_previous %}
+                    <a href="?page={{ in_debt_object.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+                {% endif %}
+                {% if in_debt_object.has_next %}
+                    <a href="?page={{ in_debt_object.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+                {% endif %}
+            </div>
+            {%else%}
+                <p>No Unpaid Loan That Is Not Valid Connected To The Account Inputted</p>
+            {%endif%}
+        {%else%}
+            {% if in_debt_object %}
+            <div style="max-width: 100%; overflow-x: auto;">
+                <table border="1" cellspacing="0">
+                    <tr>
+                        <th>DATE</th>
+                        <th>ACCOUNT</th>
+                        <th>AMOUNT</th>
+                        <th>LATEST AMOUNT</th>
+                        <th>FOR</th>
+                        <th>TILL</th>
+                        <th>ACTION</th>
+                    </tr>
+                    {% for data in in_debt_object %}
+                    <tr>
+                        <td>{{data.date}}</td>
+                        <td><a href="{% url 'customerdetail' q=data.account.account_number %}">{{data.account.account_name}}/{{data.account.account_number}}</a></td>
+                        <td>₦{{data.amount}}</td>
+                        <td>₦{{data.new_amount}}</td>
+                        <td>{{data.period}}</td>
+                        <td>{{data.till}}</td>
+                        <td><a href="{% url 'loanmanagedetail' data.pk %}" class="btn btn-info">View Detail</a></td>
+                    </tr>
+                {% endfor %}
+                </table>
+            </div><br><br>
+            <div class="flex">
+                {% if in_debt_object.has_previous %}
+                    <a href="?page={{ in_debt_object.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+                {% endif %}
+                {% if in_debt_object.has_next %}
+                    <a href="?page={{ in_debt_object.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+                {% endif %}
+            </div>
+            {%else%}
+                <p>No Unpaid Loan That Is Not Valid</p>
+            {%endif%}
+        {%endif%}
+    {% endif %}
+{% endblock %}

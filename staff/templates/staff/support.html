@@ -1,0 +1,35 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+    <div class="container col-lg-8">
+        {% if answer %}
+            <h2 class="center">ANSWERED SUPPORT</h2>
+            <a href="{% url 'all_support' %}">Back</a><hr><br>
+        {% elif notanswer %}
+            <h2 class="center">UNANSWERED SUPPORT</h2>
+            <a href="{% url 'all_support' %}">Back</a><hr><br>
+        {%else%}
+            <h2 class="center">ALL SUPPORT</h2>
+            <a href="{% url 'staff_home' %}">Back</a><hr><br>
+        {%endif%}
+        <p>Filter: <a href="{% url 'notanswered_support' %}">NOT ANSWERED</a> || <a href="{% url 'answered_support' %}">ANSWERED</a></p><br>
+        {% if support %}
+            {% for obj in support %}
+                <p>{{forloop.counter}} - <a href="{% url 'customer_support' obj.customer.id %}">{{obj.message}}</a><br>
+                By {{obj.customer.first_name}} {{obj.customer.middle_name}} {{obj.customer.last_name}}<br>
+                <i>{% if obj.answer == True %}Answered{%else%}Not Answered{%endif%}</i><br>
+                {{obj.date}}</p><br>
+            {%endfor%}
+        {%else%}
+            <p>No Support Message</p>
+        {%endif%}<br><br>
+        <div class="flex">
+            {% if support.has_previous %}
+                <a href="?page={{ support.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+            {% endif %}
+            {% if support.has_next %}
+                <a href="?page={{ support.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+            {% endif %}
+        </div>
+    </div>
+{%endblock%}

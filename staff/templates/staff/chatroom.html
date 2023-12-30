@@ -1,0 +1,46 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+    <h2 class="center">{{other_staff.first_name}} {{other_staff.middle_name}} {{other_staff.last_name}}</h2>
+    <a href="{% url 'staff_chat' %}">Back</a><hr><br><br>
+    <div style="text-align: center;">
+        {% if chat.has_previous %}
+            <a href="?page={{ chat.previous_page_number }}">&laquo; Older Messages</a> &nbsp; &nbsp; 
+            <br><br>
+        {% endif %}
+    </div>
+    <div class="container mt-5 chat-container">
+        <div class="chat-area">
+            {% for chat in chat %}
+                {% if chat.sender == request.user %}
+                    <div class="chat-box my-message">
+                        {{chat.message}}<br>
+                        <i>{{chat.date}} - Sent {% if chat.read == True %} - Read{% endif %}</i>
+                    </div>
+                {% else %}
+                    <div class="chat-box other-message">
+                        {{chat.message}}<br>
+                        <i>{{chat.date}}</i>
+                    </div>
+                {% endif %}<br>
+            {%empty%}
+                <p class="center">No Conversation</p>
+            {%endfor%}
+        </div>
+    </div><br><br>
+    <div style="text-align: center;">
+        {% if chat.has_next %}
+            <br>
+            <a href="?page={{ chat.next_page_number }}"> Newer Messages &raquo;</a> &nbsp; &nbsp;
+            <br><br><br>
+        {% endif %}
+    </div>
+    <footer>
+        <form method="post">
+            {%csrf_token%}
+            <p style="text-align: center">
+                <input type="text" name="message" placeholder="Input Message" maxlength="299" required> <input type="submit" class="btn btn-success" value="Send">
+            </p>
+        </form>
+    </footer>
+{%endblock%}

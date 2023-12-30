@@ -1,0 +1,84 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+<div class="container col-lg-10">
+    <h2 class="center">CUSTOMER'S TRANSACTION HISTORY</h2>
+    <h3>{{account.account_name}} / {{account.account_number}}</h3><br>
+    <a href="{% url 'customerdetail' account.account_number %}">Back</a><hr><br>
+    <p>
+        Filter
+        {% if fulltxn %}
+            (None)
+        {% elif debit %}
+            (Debit)
+        {% elif credit %}
+            (Credit)
+        {% elif transfer %}
+            (Transfer)
+        {% elif bill %}
+            (Bill)
+        {% elif topup %}
+            (Top Up)
+        {% elif loan %}
+            (Loan)
+        {% elif date %}
+            (Date: {{start}} to {{stop}})
+        {% elif amount %}
+            (Amount: ₦{{start}} to ₦{{stop}})
+        {%endif%}
+        : &nbsp; &nbsp;
+        <a href="{% url 'history' account.pk %}">No Filter</a> || 
+        <a class="btn-link"
+            id="daterange"
+            data-account-id="{{account.pk}}">
+            Date
+        </a> || 
+        <a class="btn-link"
+            id="amountrange"
+            data-account-id="{{account.pk}}">
+            Amount
+        </a> || 
+        <a href="{% url 'debitfilter' account.pk %}">Debit</a> || 
+        <a href="{% url 'creditfilter' account.pk %}">Credit</a> || 
+        <a href="{% url 'transferfilter' account.pk %}">Transfer</a> || 
+        <a href="{% url 'billfilter' account.pk %}">Bill</a> || 
+        <a href="{% url 'topupfilter' account.pk %}">Top Up</a> || 
+        <a href="{% url 'loanfilter' account.pk %}">Loan</a>
+    </p><br><br>
+    {% if txn %}
+        <table border="1" cellspacing="0" width="1000" style="overflow-x: auto;">
+        <tr>
+            <th>DATE</th>
+            <th>TXN</th>
+            <th>SHORT DETAIL</th>
+            <th>AMOUNT</th>
+            <th>BALANCE</th>
+            <th>ACTION</th>
+        </tr>
+        {% for data in txn %}
+        <tr>
+            <td>{{data.date}}</td>
+            <td>{{data.txn}}</td>
+            <td>{{data.detail}}</td>
+            <td>₦{{data.amount}}</td>
+            <td>₦{{data.balance}}</td>
+            <td><a href="{% url 'txndetail' data.pk account.id %}" class="btn btn-primary">View Full Detail</a></td>
+        </tr>
+        {% endfor %}
+        </table><br><br>
+        <div class="flex">
+            {% if txn.has_previous %}
+                <a href="?page={{ txn.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+            {% endif %}
+            {% if txn.has_next %}
+                <a href="?page={{ txn.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+            {% endif %}
+        </div>
+    {%else%}
+        <p>No Transaction History Found</p>
+    {%endif%}
+</div>
+    {% load static %}
+    <script src="{% static 'js/txndate.js' %}"></script>
+    <script src="{% static 'js/txnamount.js' %}"></script>
+{% endblock %}

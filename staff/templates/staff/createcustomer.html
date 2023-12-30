@@ -1,0 +1,16 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+<div class="container col-lg-6">
+    <h2 class="center">CREATE CUSTOMER</h2><hr><br>
+    <form method="post">
+        {%csrf_token%}
+        {{form1.as_p}}
+        {{form2.as_p}}
+        <div class="flex flex-justify">
+            <div>TRANSACTION PIN: <input type="password" id="pin" name="pin" placeholder="Enter 4-digits Pin" minlength="4" maxlength="4" required></div>
+            <input type="submit" value="Create" class="btn btn-primary">
+        </div>
+    </form>
+</div>
+{% endblock %}

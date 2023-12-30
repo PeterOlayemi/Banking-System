@@ -1,0 +1,38 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+    <div class="container col-lg-6">
+        <h2 class="center">MESSAGE A STAFF</h2>
+        <a href="{% url 'staff_chat' %}">Back</a><hr><br>
+        <form method="post">
+            {%csrf_token%}
+            <div class="flex">
+                <input type="text" name="q" placeholder="Staff's Name/User ID" required> &nbsp; &nbsp; 
+                <input type="submit" value="Search" class="btn btn-info">
+            </div>
+        </form><br>
+        {% if request.method == 'POST' %}<hr>
+            <h3>SEARCH RESULTS ({{staff_c}} STAFF{{staff_c|pluralize|upper}} FOUND)</h3><br>
+            {% if staffs %}
+                {% for staff in staffs %}
+                    <div class="flex">
+                        {{forloop.counter}} • &nbsp; &nbsp; {% if staff.picture %}<img src="{{staff.picture.url}}" style="height: 200px; width: 200px; border-radius: 10px;">{%else%}No_Pic{%endif%}
+                        <div class="ml-4">
+                            <a href="{% url 'start_convo' staff.pk %}">{{staff.first_name}} {{staff.middle_name}} {{staff.last_name}}</a>
+                        </div>
+                    </div><br><br><br>
+                {%endfor%}
+                <div class="flex">
+                    {% if staffs.has_previous %}
+                        <a href="?page={{ staffs.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a>
+                    {% endif %}
+                    {% if staffs.has_next %}
+                        <a href="?page={{ staffs.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a>
+                    {% endif %}
+                </div>
+            {%endif%}
+        {%else%}
+            <br><br><br>
+        {%endif%}
+    </div>
+{%endblock%}

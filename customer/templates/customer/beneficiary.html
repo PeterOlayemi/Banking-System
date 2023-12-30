@@ -1,0 +1,24 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+<h2 class="center">BENEFICIARY LIST</h2>
+<a href="{% url 'transfer' %}">Back</a> &nbsp; &nbsp; <a href="{% url 'addbeneficiary' %}">New Beneficiary</a><hr><br><br>
+<div class="container ml-4">
+    {% for obj in obj%}
+        <p>{{forloop.counter}} • {{obj.beneficiary.account_name}} / {{obj.beneficiary.account_number}} / {{obj.beneficiary.account_type}}</p>
+        <div class="ml-4">
+            <a href="{% url 'beneficiarytransfer' obj.pk %}" class="btn btn-primary">Send Money</a> 
+            <button class="btn btn-danger delete-button"
+                    data-id="{{ obj.pk }}"
+                    data-name="{{ obj.beneficiary.account_name|title }}"
+                    data-number="{{obj.beneficiary.account_number }}"
+                    data-remove-url="{% url 'removebeneficiary' %}"
+                    data-exit-url="{% url 'beneficiary' %}">
+                Remove
+            </button>
+        </div><br><br>
+    {% empty %}
+        <p>No Beneficiary</p>
+    {%endfor%}
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patridge Bank - Authentication</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/light.css' %}" id="theme-style">
+   
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+</head>
+<body class="auth">
+    <h1>Patridge Bank</h1>
+    <div class="container mt-4">
+        <label class="switch">
+            Toggle Theme: <input type="checkbox" id="dark-mode-toggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+    {% if messages %}
+    <div id="message-container">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{message|safe}}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+{% block content %}
+{% endblock %}
+
+<div class="center">Customer enquries: <a href="tel:08109051937">(+234)8109051937</a> &nbsp; &nbsp; <a href="tel:(+1)3234343534">(+1)3234343534</a> &nbsp; &nbsp; <a href="tel:(+233)9012443326">(+233)9012443326</a></div>
+
+<footer><p class="center"><br>&copy;Patridge Bank</p></footer>
+
+<script src="{% static 'js/toggle_mode.js' %}"></script>
+<script>
+    const storedTheme = localStorage.getItem('preferredTheme');
+    if (storedTheme) {
+        document.querySelector('#dark-mode-toggle').checked = storedTheme === 'dark.css';
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+
+</body>
+</html>

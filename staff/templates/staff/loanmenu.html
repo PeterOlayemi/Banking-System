@@ -1,0 +1,11 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+    <h2 class="center">LOAN MANAGEMENT</h2><hr><br>
+    <div class="container ml-4">
+        • <a href="{% url 'allloan' %}">ALL LOANS</a><br><br>
+        • <a href="{% url 'allrequested' %}">LOAN REQUESTS AWAITING RESPONSE</a><br><br>
+        • <a href="{% url 'allvalidloan' %}">UNPAID LOANS BUT STILL VALID</a><br><br>
+        • <a href="{% url 'allindebtloan' %}">UNPAID LOANS AND NOT VALID</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+<div class="container col-lg-6">
+    <form method="post">
+        <h2 class="center">FINISH PROCESS</h2><hr><br>
+        {% csrf_token %}
+        CARD PIN: <input type="password" name="pin1" minlength="4" maxlength="4" required><br><br>
+        CONFIRM CARD PIN: <input type="password" name="pin2" minlength="4" maxlength="4" required><br><br>
+        <div class="flex flex-justify">
+            <div>TRANSACTION PIN: <input type="password" name="pin" minlength="4" maxlength="4" required></div>
+            <input type="submit" value="Done" class="btn btn-success">
+        </div>
+    </form>
+</div>
+{%endblock%}

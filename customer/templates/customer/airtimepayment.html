@@ -1,0 +1,15 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+<div class="container col-lg-6">
+    <h2 class="center">NEW TOPUP (AIRTIME)</h2>
+    <p>MY ACCOUNT: {{post.account_name}} / ₦{{user.balance}}</p>
+    <b>Daily Transaction Limit: <input type="range" min="0" max="{{account_limit}}" value="{{txn_limit}}" disabled> ₦{{txn_limit}} Remaining</b><br><br>
+    <a href="{% url 'newtop' %}">Back</a><hr><br>
+    <form method="post">
+        {%csrf_token%}
+        {{form.as_p}}
+        <div class="flex flex-justify"><div><input type="checkbox" name="saved"> Save TopUp</div> <input type="submit" value="Next" class="btn btn-primary"></div>
+    </form>
+</div>
+{% endblock %}

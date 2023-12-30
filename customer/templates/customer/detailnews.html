@@ -1,0 +1,15 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <h2 class="center">NEWS DETAIL</h2>
+    <a href="{% url 'customer_home' %}">Back</a><hr><br>
+    <p>
+        SUBJECT:<br>
+        <div class="ml-4"><h3>{{news.title}}</h3></div>
+    </p><br>
+    <p>
+        BODY:<br>
+        <div class="ml-4">{{news.body}}</div>
+    </p><br>
+    <p>DATE: <i>{{news.date}}</i></p>
+{% endblock %}

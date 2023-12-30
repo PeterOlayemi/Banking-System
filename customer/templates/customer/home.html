@@ -1,0 +1,93 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+{% if account.picture %}
+    <div style="display: flex;">
+    <a href="{% url 'profile' %}"><img src="{{account.picture.url}}" style="height: 50px; width: 50px; border-radius: 30px;"></a> &nbsp; &nbsp; &nbsp; <div style="margin-top: 15px;"><a href="{% url 'profile' %}">Welcome {{user.first_name|title}}</a></div>
+    </div>
+{%else%}
+    <a href="{% url 'profile' %}">Add DP</a> &nbsp; &nbsp; <a href="{% url 'profile' %}">Welcome {{user.first_name|title}}</a>
+{%endif%} 
+<br><br>
+<div class="flex flex-justify">
+    <div>Account Balance: <b>₦{{user.balance}}</b></div>
+    <div><a href="{% url 'fund_wallet' %}">FUND WALLET</a></div>
+</div><hr><br><br>
+<h2>CARD</h2><br>
+<div class="container ml-4">
+{% if not card == False %}
+    <div class="card">
+        <p class="card_number">{{card.card_number|slice:"0:4"}} {{card.card_number|slice:"4:8"}} {{card.card_number|slice:"8:12"}} {{card.card_number|slice:"12:16"}}</p>
+        <p class="card_expiry">{{card.expires|date:"m/y"}}</p>
+        <p class="card_owner">{{card.account.account_name|upper}}</p>
+    </div>
+{%else%}
+    <p>You Do Not Have A Patridge Bank Card Attached To Your Account Or Your Card Has Expired.<br>
+    Click <a href="{% url 'card' %}">HERE</a> To Request For A New One.</p>
+{%endif%}
+</div>
+<hr><br><br>
+<h2>ALERTS &nbsp; &nbsp; ({{obj_c}} UNREAD)</h2><br>
+<div class="container ml-4">
+{% for obj in obj %}
+    {% if obj.read == False %}
+        <p><b>• <a href="{% url 'detailalert' obj.pk %}">ID: {{obj.id}}.../TXN: {{obj.txn|slice:2}}...<br>
+        AMOUNT: ₦{{obj.amount}}/<br>
+        DESC_: {{obj.detail}}<br>
+        <i>DATE: {{obj.date}}</i></a></b></p>
+    {%else%}
+        <p>• <a href="{% url 'detailalert' obj.pk %}">ID: {{obj.id}}.../TXN: {{obj.txn|slice:2}}...<br>
+        AMOUNT: ₦{{obj.amount}}/<br>
+        DESC_: {{obj.detail}}<br>
+        <i>DATE: {{obj.date}}</i></a></p>
+    {%endif%}
+{% empty %}
+    <p>No Alert To Show</p>
+{% endfor %}
+{% if obj %}{% if obj_co > 4 %}<p style="text-align: center;"><a href="{% url 'morealert' %}">MORE</a></p>{%endif%}{%endif%}
+</div>
+<hr><br><br>
+<h2>FOREIGN EXCHANGE</h2><br>
+<div class="container ml-4">
+{% if data %}
+    <table border="1">
+        <tr>
+        <th>CURRENCY</th>
+        <th>BUY</th>
+        <th>MID</th>
+        <th>SELL</th>
+        </tr>
+        {% for data in data %}
+        <tr>
+        <td>{{data.currency}}</td>
+        <td>₦{{data.buy}}</td>
+        <td>₦{{data.mid}}</td>
+        <td>₦{{data.sell}}</td>
+        </tr>
+        {% endfor %}
+    </table><br>
+    <p>LAST UPDATED AT {{data_date.date}}</p>
+    {% if data_c > 4 %}<p style="text-align: center;"><a href="{% url 'moreexchange' %}">MORE</a></p>{%endif%}
+</div>
+{% else %}
+    <p>No Exchange Information To Show</p>
+{%endif%}
+<hr><br><br>
+<h2>NEWS &nbsp; &nbsp; ({{post_c}} UNREAD)</h2><br>
+<div class="container ml-4">
+{% for post in post %}
+    {% if request.user in post.read.all %}
+        <p>• {{post.title}}<br>
+        <div class="ml-4">{{post.body|slice:50}}...<br>
+        <i>DATE: {{post.date}} <a href="{% url 'detailnews' post.pk %}">read more...</a></i></div></p>
+    {%else%}
+        <p><b>• {{post.title}}</b><br>
+        <div class="ml-4">{{post.body|slice:50}}...<br>
+        <i>DATE: {{post.date}} <a href="{% url 'detailnews' post.pk %}">read more...</a></i></div></p>
+    {%endif%}
+{% empty %}
+    <p>No News To Show</p>
+{% endfor %}
+{% if post %}{% if post_co > 4 %}<p style="text-align: center;"><a href="{% url 'morenews' %}">MORE</a></p>{%endif%}{%endif%}
+</div>
+{% endblock %}

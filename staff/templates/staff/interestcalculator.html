@@ -1,0 +1,37 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+{% if result %}
+    <h2 class="center">INTEREST CALCULATOR</h2>
+    <div class="container col-lg-6">
+        <a href="{% url 'scalculate' %}">Back</a><hr><br>
+        <p>Calculate Interest For Any Amount Not More Than ₦100 000.</p>
+        <p>Interest Is <b>0.5% PER DAY</b></p><br>
+        <form method="post">
+            {%csrf_token%}
+            <p>AMOUNT: <input type="number" value="{{principal}}" max="100000" name="principal" required></p>
+            <p>RATE: <input type="text" value="0.5%" disabled></p>
+            <p>TIME: <input type="number" value="{{time}}" max="180" name="time" placeholder="TIME IN DAYS" required> &nbsp; &nbsp;
+            <input type="submit" value="Calculate" class="btn btn-info"></p><br>
+            <p>INTEREST: <input type="number" value="{{interest}}" disabled></p>
+            <p>TOTAL AMOUNT: <input type="number" value="{{total}}" disabled></p>
+        </form>
+    </div>
+{%else%}
+    <h2 class="center">INTEREST CALCULATOR</h2>
+    <div class="container col-lg-6">
+        <a href="{% url 'staff_home' %}">Back</a><hr><br>
+        <p>Calculate Interest For Any Amount Not More Than ₦100 000.</p>
+        <p>Interest Is <b>0.5% PER DAY</b></p><br>
+        <form method="post">
+            {%csrf_token%}
+            <p>AMOUNT: <input type="number" max="100000" name="principal" required></p>
+            <p>RATE: <input type="text" value="0.5%" disabled></p>
+            <p>TIME: <input type="number" max="180" name="time" placeholder="TIME IN DAYS" required> &nbsp; &nbsp;
+            <input type="submit" value="Calculate" class="btn btn-info"></p><br>
+            <p>INTEREST: <input type="text" value="nil" disabled></p>
+            <p>TOTAL AMOUNT: <input type="text" value="nil" disabled></p>
+        </form>
+    </div>
+{%endif%}
+{%endblock%}

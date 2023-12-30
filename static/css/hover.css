@@ -1,0 +1,16 @@
+.hover {
+    position: relative;
+}
+
+.hover-description {
+    font-size: medium;
+    display: none;
+    position: absolute;
+    top: 100%;
+    color: white;
+    background-color: rgb(59, 59, 59);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-width: 400px;
+    word-wrap: break-word;
+}

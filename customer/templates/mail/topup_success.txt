@@ -1,0 +1,23 @@
+{% autoescape off %}
+Dear {{ user.first_name }},
+
+
+You have successfully paid ₦{{topup.amount}} for {{topup.airtime.service}}{{topup.data.service}} / {{topup.data.plan}} to {{topup.phone_number}}.
+id: {{topup.txn_id}}
+Date: {{topup.date}}
+
+Click this link to view transaction:
+http://{{ domain }}/customer/detail/topup/{{topup.pk}}/
+
+
+To unsubscribe from email notifications:
+http://{{ domain }}/customer/setting/
+
+This message was sent to {{user.email}} because you have registered with us.
+If you did not make this transaction, message us - patridgebankgroup@yahoo.com to take neccessary measures.
+
+
+Best Regards,
+Patridge Bank
+{{bill.date.date}}
+{% endautoescape %}  

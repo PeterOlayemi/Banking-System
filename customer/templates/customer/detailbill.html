@@ -1,0 +1,69 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <h2 class="center">TRANSACTION DETAIL</h2>
+    <div class="container col-lg-6">
+        <a href="{{request.META.HTTP_REFERER}}">Back</a><hr><br>
+        <p>TXN: {{bill.txn_id}}</p>
+        {% if bill.cable %}
+            <p>SERVICE: {{bill.cable.service}}</p>
+            <p>PLAN: {{bill.cable.plan}}</p>
+            <p>CARD NUMBER: {{bill.cable.card_number}}</p>
+            <p>EXCHANGE REFERENCE: {{bill.cable.exchange_reference}}</p>
+            <p>CUSTOMER NAME: {{bill.cable.customer_name}}</p>
+            <p>CUSTOMER NUMBER: {{bill.cable.customer_number}}</p>
+            {% if bill.cable.service.name == 'GOTV' or bill.cable.service.name == 'DSTV' %}
+                <p>CUSTOMER CARE REFERENCE ID: {{bill.cable.customercare_referenceid}}</p>
+                <p>AUDIT REFERENCE NUMBER: {{bill.cable.audit_referencenumber}}</p>
+            {%endif%}
+        {%endif%}
+        {% if bill.electricity %}
+            <p>SERVICE: {{bill.electricity.service}}</p>
+            {% if bill.electricity.service.name == 'Eko Electricity Prepaid' %}
+                <p>CUSTOMER NAME: {{bill.electricity.customer_name}}</p>
+                <p>CUSTOMER ADDRESS: {{bill.electricity.customer_address}}</p>
+                <p>CUSTOMER DISTRICT: {{bill.electricity.customer_district}}</p>
+                <p>BSST TOKEN VALUE: {{bill.electricity.bsst_tokenvalue}}</p>
+                <p>STANDARD TOKEN VALUE: {{bill.electricity.standard_tokenvalue}}</p>
+                <p>UTILITY NAME: {{bill.electricity.utility_name}}</p>
+                <p>EXCHANGE REFERENCE: {{bill.electricity.exchange_reference}}</p>
+            {%endif%}
+            {% if bill.electricity.service.name == 'Abuja Electricity Prepaid' %}
+                <p>CUSTOMER NAME: {{bill.electricity.customer_name}}</p>
+                <p>CUSTOMER ADDRESS: {{bill.electricity.customer_address}}</p>
+                <p>CUSTOMER REFERENCE: {{bill.electricity.customer_reference}}</p>
+                <p>TOKEN: {{bill.electricity.token}}</p>
+                <p>RECEIPT NUMBER: {{bill.electricity.receipt_number}}</p>
+                <p>REFERENCE: {{bill.electricity.exchange_reference}}</p>
+            {%endif%}
+            {% if bill.electricity.service.name == 'Kaduna Electricity Prepaid' %}
+                <p>CUSTOMER NAME: {{bill.electricity.customer_name}}</p>
+                <p>CUSTOMER ADDRESS: {{bill.electricity.customer_address}}</p>
+                <p>CUSTOMER PHONE NUMBER: {{bill.electricity.phone_number}}</p>
+                <p>TARIFF: {{bill.electricity.tariff_code}}</p>
+                <p>TOKEN: {{bill.electricity.token}}</p>
+                <p>UNITS: {{bill.electricity.unit}}</p>
+                <p>RECEIPT NUMBER: {{bill.electricity.receipt_number}}</p>
+                <p>EXCHANGE REFERENCE: {{bill.electricity.exchange_reference}}</p>
+            {%endif%}
+            {% if bill.electricity.service.name == 'Ibadan Electricity Prepaid' %}
+                <p>CUSTOMER NAME: {{bill.electricity.customer_name}}</p>
+                <p>CUSTOMER ADDRESS: {{bill.electricity.customer_address}}</p>
+                <p>TARIFF: {{bill.electricity.tariff_code}}</p>
+                <p>TOKEN: {{bill.electricity.token}}</p>
+                <p>RESET TOKEN: {{bill.electricity.bsst_tokenvalue}}</p>
+                <p>CUSTOMER REFERENCE: {{bill.electricity.customerReference}}</p>
+                <p>EXCHANGE REFERENCE: {{bill.electricity.exchange_reference}}</p>
+            {%endif%}
+            <p>METER NUMBER: {{bill.electricity.meter_number}}</p>
+        {%endif%}
+        <p>AMOUNT: ₦{{bill.amount}}</p>
+        <p>STATUS: {{bill.status}}</p>
+        <p>DATE: {{bill.date}}</p><br>
+        <p>
+            {% if bill.electricity %}
+                <a href="{% url 'repeatelectricity' bill.electricity.pk %}" class="btn btn-info">Repeat Transaction</a>
+            {%endif%}
+        </p>
+    </div>
+{%endblock%}

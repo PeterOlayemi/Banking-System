@@ -1,0 +1,28 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <h2 class="center">TRANSACTION DETAIL</h2>
+    <div class="container col-lg-6">
+        <a href="{{request.META.HTTP_REFERER}}">Back</a><hr><br>
+        <p>ID: {{topup.txn_id}}</p>
+        {% if topup.airtime %}
+            <p>SERVICE: {{topup.airtime.service}}</p>
+        {%endif%}
+        {% if topup.data %}
+            <p>SERVICE: {{topup.data.service}}</p>
+            <p>PLAN: {{topup.data.plan}}</p>
+        {%endif%}
+        <p>PHONE NUMBER: {{topup.phone_number}}</p>
+        <p>AMOUNT: ₦{{topup.amount}}</p>
+        <p>STATUS: {{topup.status}}</p>
+        <p>DATE: {{topup.date}}</p><br>
+        <p>
+            {% if topup.airtime %}
+                <a href="{% url 'repeatairtime' topup.airtime.pk %}" class="btn btn-info">Repeat Transaction</a>
+            {%endif%}
+            {% if topup.data %}
+                <a href="{% url 'repeatdata' topup.data.pk %}" class="btn btn-info">Repeat Transaction</a>
+            {%endif%}
+        </p>
+    </div>
+{%endblock%}

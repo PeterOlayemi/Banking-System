@@ -1,0 +1,25 @@
+{% autoescape off %}
+Dear {{ user.first_name }},
+
+
+You have successfully added a beneficiary to your account
+
+Account Number: {{beneficiary.beneficiary.account_number}}
+Account Name: {{beneficiary.beneficiary.account_name}}
+Account Type: {{beneficiary.beneficiary.account_type}}
+
+Click this link to view beneficiaries:
+http://{{ domain }}/customer/beneficiary/
+
+
+To unsubscribe from email notifications:
+http://{{ domain }}/customer/setting/
+
+This message was sent to {{user.email}} because you have registered with us.
+If you did not make this request, message us patridgebankgroup@yahoo.com to take neccessary measures.
+
+
+Best Regards,
+Patridge Bank
+{{date}}
+{% endautoescape %}  

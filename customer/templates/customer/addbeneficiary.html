@@ -1,0 +1,14 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+<h2 class="center">ADD BENEFICIARY</h2>
+<a href="{% url 'beneficiary' %}">Back</a><hr><br><br>
+<div class="center container col-lg-6">
+    <form method="post">
+    {%csrf_token%}
+    <div class="flex flex-justify">
+        <div>ACCOUNT NUMBER: <input type="number" name="beneficiary" id="beneficiary"></div><br>
+        <div><input type="submit" class="btn btn-info" value="Next"></div>
+    </form>
+</div>
+{% endblock %}

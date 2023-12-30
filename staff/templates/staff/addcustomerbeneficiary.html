@@ -1,0 +1,17 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+    <div class="container col-lg-8">
+        <h2 class="center">MANAGE CUSTOMER'S BENEFICIARY</h2>
+        <h3>{{account.account_name}} / {{account.account_number}}</h3><br>
+        <a href="{% url 'managebene' account.pk %}">Back</a><hr><br>
+        <form method="post">
+            <h3>ADD BENEFICIARY</h3><br>
+            {%csrf_token%}
+            <div class="flex flex-justify">
+                <div>BENEFICIARY'S ACCOUNT NUMBER: <input type="number" name="account_number" required></div>
+                <input type="submit" value="Confirm" class="btn btn-info">
+            </div><br><br><br>
+        </form>
+    </div>
+{%endblock%}

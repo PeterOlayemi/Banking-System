@@ -1,0 +1,43 @@
+ {% extends 'customer/base.html' %}
+
+{% block content %}
+    <h2 class="center">SUPPORT</h2>
+    <a href="{% url 'more' %}">Back</a> &nbsp; &nbsp; <a href="{% url 'faq' %}">FAQs</a><hr><br>
+    <div class="center">
+        {% if support.has_previous %}
+            <a href="?page={{ support.previous_page_number }}" class="center">&laquo; Older Messages</a><br><br><br>
+        {% endif %}
+    </div>
+    <div class="container mt-5 chat-container">
+        <div class="chat-area">
+            {% for obj in support %}
+                {% if obj.staff %}
+                    <div class="chat-box other-message">
+                        {{obj.message}}<br>
+                        <i>{{obj.date}}</i>
+                    </div>
+                {%else%}
+                    <div class="chat-box my-message">
+                        {{obj.message}}<br>
+                        <i>{{obj.date}}</i>
+                    </div>
+                {%endif%}<br>
+            {%empty%}
+                <p class="center">No Conversation</p>
+            {%endfor%}
+        </div>
+    </div><br><br>
+    <div class="center">
+        {% if support.has_next %}
+            <a href="?page={{ support.next_page_number }}"> Newer Messages &raquo;</a><br><br><br>
+        {% endif %}
+    </div>
+    <footer class="center">
+        <form method="post">
+            {% csrf_token %}
+            <p style="text-align: center">
+                <input type="text" name="message" placeholder="Input Message" maxlength="299" minlength="10" required> <input type="submit" class="btn btn-success" value="Send">
+            </p>
+        </form>
+    </footer>
+{% endblock %}

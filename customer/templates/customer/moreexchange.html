@@ -1,0 +1,33 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <div class="container col-lg-6">
+        <h2 class="center">FOREIGN EXCHANGE</h2>
+        <a href="{% url 'customer_home' %}">Back</a><hr><br>
+        <table border="1" width="400" class="center" align="center">
+            <tr>
+                <th>CURRENCY</th>
+                <th>BUY</th>
+                <th>MID</th>
+                <th>SELL</th>
+            </tr>
+            {% for data in data %}
+            <tr>
+                <td>{{data.currency}}</td>
+                <td>₦{{data.buy}}</td>
+                <td>₦{{data.mid}}</td>
+                <td>₦{{data.sell}}</td>
+            </tr>
+            {% endfor %}
+        </table><br>
+        <p>LAST UPDATED AT {{data_date.date}}</p><br>
+        <div class="flex">
+            {% if data.has_previous %}
+                <a href="?page={{ data.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+            {% endif %}
+            {% if data.has_next %}
+                <a href="?page={{ data.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

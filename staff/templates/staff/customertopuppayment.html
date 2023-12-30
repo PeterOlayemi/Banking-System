@@ -1,0 +1,11 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+    <h2 class="center">NEW TOPUP</h2>
+    <h3>Account: {{account.account_name}} / ₦{{account.user.balance}}</h3><br>
+    <a href="{% url 'customerdetail' q=account.account_number %}">Back</a><hr><br>
+    <div class="container ml-4">
+        • <a href="{% url 'customerairtime' account.pk %}">AIRTIME RECHARGE</a><br><br>
+        • <a href="{% url 'customerdata' account.pk %}">DATA RECHARGE</a>
+    </div>
+{% endblock %}

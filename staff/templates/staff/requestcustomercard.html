@@ -1,0 +1,20 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+<div class="container col-lg-6">
+    <h2 class="center">REQUEST CARD</h2>
+    <h3>{{account.account_name}} / {{account.account_number}}</h3><br>
+    <a href="{% url 'cardmanage' account.pk %}">Back</a><hr><br>
+    <p>Make Sure Customer Has At Least ₦1000 In Their Account.<br>
+    {% if card %}
+        There Is Already A Valid Card Attached To This Account, It Will Be Removed If This Request Is Successful.
+    {%endif%}
+    </p>
+    <form method="post">
+        {%csrf_token%}
+        ENTER CARD PIN: <input type="password" name="pin1" placeholder="Enter 4-digits pin" minlength="4" maxlength="4" required><br><br>
+        CONFIRM CARD PIN: <input type="password" name="pin2" minlength="4" maxlength="4" required>
+        <div class="right"><input type="submit" value="Request" class="btn btn-primary"></div>
+    </form>
+</div>
+{% endblock %}

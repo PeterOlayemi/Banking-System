@@ -1,0 +1,20 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+<h2 class="center">TRANSFER</h2>
+<b>Daily Transaction Limit: <input type="range" min="0" max="{{account_limit}}" value="{{txn_limit}}" disabled> ₦{{txn_limit}} Remaining</b><hr><br>
+• <a href="{% url 'localtransfer' %}">LOCAL TRANSFER</a><br><br>
+• <a href="{% url 'beneficiary' %}">BENEFICIARIES</a><hr><br>
+<h3>RECENT TRANSFERS</h3><br>
+<div class="container ml-4">
+    {% for obj in obj%}
+        <div class="flex flex-justify">
+            <div>• <a href="{% url 'detailtransfer' obj.pk %}">{% if obj.sender.user == request.user %}To {{obj.receiver.account_name}}{%else%}From {{obj.sender.account_name}}{%endif%}</a></div>
+            <div>{% if obj.sender.user == request.user %}<span style="color: red;">- ₦{{obj.amount}}</span>{%else%}<span style="color: green;">+ ₦{{obj.amount}}</span>{%endif%}</div>
+        </div><br><br>
+    {% empty %}
+        <p>No Recent Transfer</p>
+    {%endfor%}
+    {% if obj %}{% if obj_c > 4 %}<p style="text-align: center;"><a href="{% url 'moretransfer' %}">MORE</a></p>{%endif%}{%endif%}
+</div>
+{% endblock %}

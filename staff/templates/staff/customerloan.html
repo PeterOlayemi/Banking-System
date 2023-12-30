@@ -1,0 +1,120 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+<h2 class="center">CUSTOMER'S LOAN MANAGEMENT</h2>
+<h3>{{account.account_name}} / ₦{{account.user.balance}}</h3><br>
+<a href="{% url 'customerdetail' account.account_number %}">Back</a> &nbsp; &nbsp; 
+<a href="{% url 'requestloan' account.pk %}">Request and Approve Loan For Customer</a><hr><br>
+<h3>LOAN REQUEST WAITING FOR RESPONSE</h3>
+    {% if requested %}
+    <div style="max-width: 100%; overflow-x: auto;">
+        <table border="1" cellspacing="0">
+            <tr>
+                <th>DATE</th>
+                <th>AMOUNT</th>
+                <th>FOR</th>
+                <th>ACTION</th>
+            </tr>
+            {% for data in requested %}
+            <tr>
+                <td>{{data.date}}</td>
+                <td>₦{{data.amount}}</td>
+                <td>{{data.period}}</td>
+                <td><a href="{% url 'loanmanagedetail' data.pk %}" class="btn btn-info">View Detail</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {%else%}
+        <p>No Loan Request</p>
+    {%endif%}<hr><br>
+<h3>UNPAID LOAN BUT STILL VALID</h3>
+    {% if valid_loan %}
+    <div style="max-width: 100%; overflow-x: auto;">
+        <table border="1" cellspacing="0">
+            <tr>
+                <th>DATE</th>
+                <th>AMOUNT</th>
+                <th>LATEST AMOUNT</th>
+                <th>FOR</th>
+                <th>TILL</th>
+                <th>ACTION</th>
+            </tr>
+            <tr>
+                <td>{{valid_loan.date}}</td>
+                <td>₦{{valid_loan.amount}}</td>
+                <td>₦{{valid_loan.new_amount}}</td>
+                <td>{{valid_loan.period}}</td>
+                <td>{{valid_loan.till}}</td>
+                <td><a href="{% url 'loanmanagedetail' valid_loan.pk %}" class="btn btn-info">View Detail</a></td>
+            </tr>
+        </table>
+    </div>
+    {%else%}
+        <p>No Unpaid Loan That Is Still Valid</p>
+    {%endif%}<hr><br>
+<h3>UNPAID LOAN AND NOT VALID</h3>
+    {% if in_debt_object %}
+    <div style="max-width: 100%; overflow-x: auto;">
+        <table border="1" cellspacing="0">
+            <tr>
+                <th>DATE</th>
+                <th>AMOUNT</th>
+                <th>LATEST AMOUNT</th>
+                <th>FOR</th>
+                <th>TILL</th>
+                <th>ACTION</th>
+            </tr>
+            <tr>
+                <td>{{in_debt_object.date}}</td>
+                <td>₦{{in_debt_object.amount}}</td>
+                <td>₦{{in_debt_object.new_amount}}</td>
+                <td>{{in_debt_object.period}}</td>
+                <td>{{in_debt_object.till}}</td>
+                <td><a href="{% url 'loanmanagedetail' in_debt_object.pk %}" class="btn btn-info">View Detail</a></td>
+            </tr>
+        </table>
+    </div>
+    {%else%}
+        <p>No Unpaid Loan That Is Not Valid</p>
+    {%endif%}<hr><br><br>
+<h3>LOAN HISTORY</h3>
+    {% if all_loan %}
+    <div style="max-width: 100%; overflow-x: auto;">
+        <table border="1" cellspacing="0">
+            <tr>
+                <th>DATE</th>
+                <th>AMOUNT</th>
+                <th>LATEST AMOUNT</th>
+                <th>FOR</th>
+                <th>TILL</th>
+                <th>STATUS</th>
+                <th>ACTION</th>
+            </tr>
+            {% for data in all_loan %}
+            <tr>
+                <td>{{data.date}}</td>
+                <td>₦{{data.amount}}</td>
+                <td>₦{{data.new_amount}}</td>
+                <td>{{data.period}}</td>
+                <td>{{data.till}}</td>
+                <td>
+                    {% if data.approved == True and data.paid == True %}
+                        Loan Approved And Has Been Returned
+                    {% elif data.approved == True and data.paid == False %}
+                        Loan Approved But Has Not Been Returned
+                    {% elif data.disapproved == True %}
+                        Loan Not Approved
+                    {% elif data.approved == False and data.disapproved == False %}
+                        Loan Has Not Yet Been Attended To
+                    {%endif%}
+                </td>
+                <td><a href="{% url 'loanmanagedetail' data.pk %}" class="btn btn-info">View Detail</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {%else%}
+        <p>No Loan History</p>
+    {%endif%}
+{%endblock%}

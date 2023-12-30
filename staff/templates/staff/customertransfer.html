@@ -1,0 +1,21 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+<div class="container col-lg-8">
+    <h2 class="center">MAKE TRANSFER</h2>
+    <h3>Account: {{account.account_name}} / ₦{{account.user.balance}}</h3><br>
+    <a href="{% url 'customerdetail' q=account.account_number %}">Back</a><hr><br>
+    <form method="post">
+        {%csrf_token%}
+        <div class="flex flex-justify">
+            <div>RECEIVER'S ACCOUNT NUMBER: <input type="number" name="receiver" required></div>
+            <div><input type="checkbox" name="add"> Add To Beneficiaries</div>
+        </div><br>
+        AMOUNT: <input type="number" name="amount" required><br><br>
+        <div class="flex flex-justify">
+            <div>PURPOSE(Optional): <input type="text" name="purpose" maxlength="19"></div>
+            <input type="submit" value="Next" class="btn btn-primary">
+        </div>
+    </form>
+</div>
+{% endblock %}

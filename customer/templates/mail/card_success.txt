@@ -1,0 +1,25 @@
+{% autoescape off %}
+Dear {{ user.first_name }},
+
+
+You have successfully gotten a Patridge Bank virtual card.
+It can be used for all your online transactions.
+Account: {{card.account.account_name}}/{{card.account.account_number}}
+id: {{card.card_id}}
+Date: {{card.date}}
+
+Click this link to view card details:
+http://{{ domain }}/customer/service/
+
+
+To unsubscribe from email notifications:
+http://{{ domain }}/customer/setting/
+
+This message was sent to {{user.email}} because you have registered with us.
+If you did not make this request, message us - patridgebankgroup@yahoo.com to take neccessary measures.
+
+
+Best Regards,
+Patridge Bank
+{{card.date.date}}
+{% endautoescape %}  

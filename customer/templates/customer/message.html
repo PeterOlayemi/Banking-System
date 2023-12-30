@@ -1,0 +1,18 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+<h2 class="center">MY MESSAGES ({{message_c}} Unread)</h2>
+<div class="container col-lg-6">
+    {% for message in message %}
+        {% if message.read == False %}
+            <hr><p>{{forloop.counter}} • <b><a href="{% url 'detailmessage' message.pk %}">{{message.message}}</a><br>
+            <i class="ml-4">{{message.date}}</i></b></p>
+        {% else %}
+            <hr><p>{{forloop.counter}} • <a href="{% url 'detailmessage' message.pk %}">{{message.message}}</a><br>
+            <i class="ml-4">{{message.date}}</i></p>
+        {% endif %}
+    {% empty %}
+        <p>You Have No Message</p>
+    {% endfor %}
+</div>
+{% endblock %}

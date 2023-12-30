@@ -1,0 +1,33 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+{% if topup.airtime %}
+    <h2 class="center">CONFIRM TOPUP</h2>
+    <div class="container col-lg-6">
+        <form method="post">
+            {%csrf_token%}
+            <p>TXN: {{topup.txn_id}}</p>
+            <p>SERVICE: {{topup.airtime.service}}</p>
+            <p>AMOUNT: ₦{{topup.amount}}</p>
+            <p>PHONE NUMBER: {{topup.phone_number}}</p>
+            <p>DATE: {{topup.date}}</p>
+            <input type="submit" value="Confirm" class="btn btn-primary">&nbsp;&nbsp;<a href="{% url 'airtime' %}" class="btn btn-danger">Cancel</a>
+        </form>
+    </div>
+{%endif%}
+{% if topup.data %}
+    <h2 class="center">CONFIRM TOPUP</h2>
+    <div class="container col-lg-6">
+        <form method="post">
+            {%csrf_token%}
+            <p>TXN: {{topup.txn_id}}</p>
+            <p>SERVICE: {{topup.data.service}}</p>
+            <p>PLAN: {{topup.data.plan}}</p>
+            <p>AMOUNT: ₦{{topup.amount}}</p>
+            <p>PHONE NUMBER: {{topup.phone_number}}</p>
+            <p>DATE: {{topup.date}}</p>
+            <input type="submit" value="Confirm" class="btn btn-primary">&nbsp;&nbsp;<a href="{% url 'data' %}" class="btn btn-danger">Cancel</a>
+        </form>
+    </div>
+{%endif%}
+{%endblock%}

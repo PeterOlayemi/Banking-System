@@ -1,0 +1,36 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <div class="container col-lg-6">
+        <h2 class="center">TRANSFER HISTORY</h2>
+        <a href="{% url 'transfer' %}">Back</a><hr>
+        {% for obj in transfer%}
+            <div class="flex flex-justify">
+                <div>
+                    • <a href="{% url 'detailtransfer' obj.pk %}">
+                        {% if obj.sender.user == request.user %}
+                            To {{obj.receiver.account_name}}
+                        {%else%}
+                            From {{obj.sender.account_name}}
+                        {%endif%}
+                    </a>
+                </div>
+                <div>
+                    {% if obj.sender.user == request.user %}
+                        <span style="color: red;">- ₦{{obj.amount}}</span>
+                    {%else%}
+                        <span style="color: green;">+ ₦{{obj.amount}}</span>
+                    {%endif%}
+                </div>
+            </div><br><br>
+        {%endfor%}
+        <div class="flex">
+            {% if transfer.has_previous %}
+                <a href="?page={{ transfer.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+            {% endif %}
+            {% if transfer.has_next %}
+                <a href="?page={{ transfer.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

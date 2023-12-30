@@ -1,0 +1,29 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <div class="container col-lg-6">
+        <h2 class="center">ALERTS &nbsp; &nbsp; ({{obj_c}} UNREAD)</h2>
+        <a href="{% url 'customer_home' %}">Back</a><hr><br>
+        {% for obj in obj %}
+            {% if obj.read == False %}
+                <p><b>• <a href="{% url 'detailalert' obj.pk %}">ID: {{obj.id}}.../TXN: {{obj.txn|slice:2}}...<br>
+                AMOUNT: ₦{{obj.amount}}/<br>
+                DESC_: {{obj.detail}}<br>
+                <i>DATE: {{obj.date}}</i></a></b></p>
+            {%else%}
+                <p>• <a href="{% url 'detailalert' obj.pk %}">ID: {{obj.id}}.../TXN: {{obj.txn|slice:2}}...<br>
+                AMOUNT: ₦{{obj.amount}}/<br>
+                DESC_: {{obj.detail}}<br>
+                <i>DATE: {{obj.date}}</i></a></p>
+            {%endif%}
+        {% endfor %}<br><br>
+        <div class="flex">
+            {% if obj.has_previous %}
+                <a href="?page={{ obj.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+            {% endif %}
+            {% if obj.has_next %}
+                <a href="?page={{ obj.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'general/base.html' %}
+
+{% block content %}
+<div class="container mt-4 col-lg-6">
+    <div class="center"><h2>FINISH ACCOUNT SETUP</h2></div><br>
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p><input type="checkbox" name="agree"> I Agree To Patridge Bank's <a href="{% url 'term' %}">Terms Of Service</a> And <a href="{% url 'privacy' %}">Privacy Policy</a> {% if staff %}For Staff{%endif%}</p>
+    <div class="right"><button type="submit" class="btn btn-primary">Next</button></div>
+    </form><br><br><br>
+</div>
+{% endblock %}

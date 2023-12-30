@@ -1,0 +1,18 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <h2 class="center">OTHER SERVICES</h2><hr><br>
+    <div class="container col-lg-6">
+        • <a href="{% url 'modify' %}">Modify Daily Transfer Limit</a><br><br>
+        • <a href="{% url 'statement' %}">Request Bank Statement</a><br><br>
+        • <a href="{% url 'card' %}">Request A New Card</a>
+        {% if card %}<br><br><hr>
+            <h2>Your Card</h2>
+            <div class="card">
+                <p class="card_number">{{card.card_number|slice:"0:4"}} {{card.card_number|slice:"4:8"}} {{card.card_number|slice:"8:12"}} {{card.card_number|slice:"12:16"}}</p>
+                <p class="card_expiry">{{card.expires|date:"m/y"}}</p>
+                <p class="card_owner">{{card.account.account_name|upper}}</p>
+            </div>
+        {%endif%}
+    </div>
+{% endblock %}

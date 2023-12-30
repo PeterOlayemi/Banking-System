@@ -1,0 +1,95 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="container col-lg-8">
+    <h2 class="center">ACCOUNT DEMOGRAPHICS</h2>
+    <h3>{{account.account_name}} / {{account.account_number}}</h3><br>
+    <a href="{% url 'customerdetail' account.account_number %}">Back</a><hr><br>
+    <h3>CREDIT - DEBIT DEMOGRAPHICS</h3><br>
+    Filter(
+        {% if nofilter %}
+            None
+        {% elif datefilter %}
+            From {{start}} to {{stop}}
+        {% elif dateutilfilter %}
+            None
+        {%endif%}
+        ): &nbsp; &nbsp;
+    <a href="{% url 'txn_chart' account.pk %}">All Time</a> || 
+    <a class="btn-link"
+        id="datetxnrange"
+        data-account-id="{{account.pk}}">
+        Date
+    </a><br><br><br>
+    <div class="flex flex-justify">
+        <div>
+            TOTAL CREDIT: ₦{{ credit_amount }}<br><br>
+            TOTAL DEBIT: ₦{{ debit_amount }}
+        </div>
+        <div style="width:50%; margin: auto;">
+            <canvas id="transactionChart"></canvas>
+        </div>
+    </div><br><hr><br>
+    <h3>UTILITY DEMOGRAPHICS</h3><br>
+    Filter(
+        {% if nofilter %}
+            None
+        {% elif dateutilfilter %}
+            From {{start}} to {{stop}}
+        {% elif datefilter %}
+            None
+        {%endif%}
+        ): &nbsp; &nbsp;
+    <a href="{% url 'txn_chart' account.pk %}">All Time</a> || 
+    <a class="btn-link"
+        id="dateutilrange"
+        data-account-id="{{account.pk}}">
+        Date
+    </a><br><br><br>
+    <div class="flex flex-justify">
+        <div>
+            TOTAL TRANSFER SENT: ₦{{ transfer_amount }}<br><br>
+            TOTAL BILL PAYMENT: ₦{{ bill_amount }}<br><br>
+            TOTAL TOPUP PAYMENT: ₦{{ topup_amount }}
+        </div>
+        <div style="width:50%; margin: auto;">
+            <canvas id="UtilityChart"></canvas>
+        </div>
+    </div>
+</div>
+
+{% load static %}
+<script src="{% static 'js/demographictxndate.js' %}"></script>
+<script src="{% static 'js/demographicutildate.js' %}"></script>
+<script>
+    var ctx = document.getElementById('transactionChart').getContext('2d');
+
+    var pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Credit', 'Debit'],
+            datasets: [{
+                data: [{{ credit_amount }}, {{ debit_amount }}],
+                backgroundColor: ['green', 'red'],
+            }]
+        },
+    });
+</script>
+<script>
+    var ctx = document.getElementById('UtilityChart').getContext('2d');
+
+    var pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Transfer', 'Bill', 'TopUp'],
+            datasets: [{
+                data: [{{ transfer_amount }}, {{ bill_amount }}, {{ topup_amount }}],
+                backgroundColor: ['darkred', 'blue', 'yellow'],
+            }]
+        },
+    });
+</script>
+
+{% endblock %}

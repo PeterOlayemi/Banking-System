@@ -1,0 +1,28 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <div class="container col-lg-6">
+        <h2 class="center">SAVED BILLS</h2>
+        <a href="{% url 'bill' %}">Back</a><hr><br>
+        {% for obj in saved %}
+            <p>
+                • <a href="{% url 'detailbill' obj.pk %}">
+                    {% if obj.cable %}
+                        {{obj.cable.service}}/{{obj.cable.plan}}/AMOUNT: ₦{{obj.amount}}
+                    {%endif%}
+                    {% if obj.electricity %}
+                        {{obj.electricity.service}}/{{obj.electricity.meter_number}}/AMOUNT: ₦{{obj.amount}}
+                    {%endif%}
+                </a>
+            </p><br>
+        {%endfor%}<br>
+        <div class="flex">
+            {% if saved.has_previous %}
+                <a href="?page={{ saved.previous_page_number }}" class="btn btn-primary">&laquo; Previous Page</a> &nbsp; &nbsp; 
+            {% endif %}
+            {% if saved.has_next %}
+                <a href="?page={{ saved.next_page_number }}" class="btn btn-primary"> Next Page &raquo;</a> &nbsp; &nbsp;
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

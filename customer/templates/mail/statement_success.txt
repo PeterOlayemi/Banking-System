@@ -1,0 +1,25 @@
+{% autoescape off %}
+Dear {{ user.first_name }},
+
+
+Your request for your bank statement is successful.
+Account: {{account.account_name}}/{{account.account_number}}
+Date: {{date}}
+From: {{start}}
+To: {{stop}}
+
+
+You can download the statement below:
+http://{{ domain }}/customer/download/statement/{{start}}/{{stop}}/
+
+To unsubscribe from email notifications:
+http://{{ domain }}/customer/setting/
+
+This message was sent to {{user.email}} because you have registered with us.
+If you did not make this request, message us - patridgebankgroup@yahoo.com to take neccessary measures.
+
+
+Best Regards,
+Patridge Bank
+{{date}}
+{% endautoescape %}  

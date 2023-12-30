@@ -1,0 +1,80 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+    <h2 class="center">{{account.account_name}}</h2><hr><br>
+    <div class="row">
+        <div class="col-md-2 order-md-last">
+            <h3>Actions</h3><hr>
+            <a href="{% url 'editcustomer' account.pk %}">Edit/{% if account.user.is_active == True %}Freeze{%else%}Unfreeze{%endif%}/Delete Account</a><br><br>
+            <a href="{% url 'customer_message' account.pk %}">Send Message</a><br><br>
+            <a href="{% url 'history' account.pk %}">Transaction History</a><br><br>
+            <a href="{% url 'customer_statement' account.pk %}">Get Bank Statement</a><br><br>
+            <a class="btn-link" onclick="showAccountDetails({{account.pk}}, '/staff/customer/detail/%3Fq={{account.account_number}}/')">Credit/Debit Account</a><br><br>
+            <a href="{% url 'txn_chart' account.pk %}">Account Demographics</a><hr><br>
+            <a href="{% url 'managebene' account.pk %}">Customer's Beneficiary</a><br><br>
+            <a href="{% url 'loanmanage' account.pk %}">Loan Management</a><br><br>
+            <a href="{% url 'cardmanage' account.pk %}">Card Management</a><hr><br>
+            <a href="{% url 'customertransfer' account.pk %}">Transfer</a><br><br>
+            <a href="{% url 'customerbill' account.pk %}">Pay Bills</a><br><br>
+            <a href="{% url 'customertop' account.pk %}">Top Up</a><br><br><br><br>
+        </div>
+        <div class="col-md-10">
+            {% if account.picture %}
+                <div align="center"><img src="{{account.picture.url}}" style="height: 150px; width: 150px; border-radius: 70px;"></div>
+                <form method="post" align="center" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    {{form}}
+                    <input type="submit" value="Change" class="btn btn-primary">
+                </form>
+            {%else%}
+                <form method="post" align="center" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    {{form}}
+                    <input type="submit" value="Add DP" class="btn btn-primary">
+                </form>
+            {%endif%}<br><br><br><br>
+
+            <h3>USER DETAILS</h3><br>
+            USER ID:<br>
+            {{account.user.user_ID}}<hr>
+            <div class="flex flex-justify">
+                <div>LAST LOGIN:<br>{{account.user.last_login}}</div>
+                <div>DATE JOINED:<br>{{account.user.date_joined}}</div>
+            </div><br><hr><br>
+
+            <h3>PERSONAL DETAILS</h3><br>
+            FIRST NAME:<br>{{account.user.first_name|upper}}<br><hr>
+            <div class="flex flex-justify">
+                <div>MIDDLE NAME:<br>{{account.user.middle_name|upper}}</div>
+                <div>LAST NAME:<br>{{account.user.last_name|upper}}</div>
+            </div><hr>
+            <div class="flex flex-justify">
+                <div>PHONE NUMBER:<br>{{account.user.phone_number}}</div>
+                <div>EMAIL:<br>{{account.user.email|upper}}</div>
+            </div><hr>
+            DATE OF BIRTH:<br>{{account.date_of_birth}}<hr>
+            ADDRESS:<br>{{account.street_address|upper}}, {{account.city|upper}}, {{account.state|upper}} STATE<hr>
+            NATIONALITY:<br>{{account.country}}<hr>
+            MARITAL STATUS:<br>{{account.marital_status}}<hr>
+            OCCUPATION:<br>{{account.occupation}}<br><hr><br>
+
+            <h3>ACCOUNT DETAILS</h3><br>
+            ACCOUNT NUMBER:<br>{{account.account_number}}<hr>
+            BALANCE:<br>₦{{account.user.balance}}<hr>
+            ACCOUNT TYPE:<br>{{account.account_type}}<hr>
+            BVN:<br>
+                {% if account.bvn %}
+                    {{account.bvn}}
+                {% else %}
+                    <br>
+                {%endif%}<hr>
+            <div class="flex flex-justify">
+                <div>TXN LIMIT:<br>₦{{account.txn_limit}} PER DAY</div>
+                <div>REMAINING TODAY:<br>₦{{account.txn_limit_remaining}}</div>
+            </div><hr>
+            EMAIL NOTIFICATION: {% if account.user.email_notification == True %}ON{%else%}OFF{%endif%}
+        </div>
+    </div>
+    {% load static %}
+     <script src="{% static 'js/accountscript.js' %}"></script>
+{%endblock%}

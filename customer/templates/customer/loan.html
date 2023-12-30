@@ -1,0 +1,100 @@
+{% extends 'customer/base.html' %}
+    
+{% block content %}
+<h2 class="center">LOAN MANAGEMENT</h2>
+<a href="{% url 'calculate' %}">INTEREST CALCULATOR</a><hr><br><br>
+{% if no_debt == True %}
+    {% if date_eligibility == True and transaction_eligibility == True %}
+        {% if requested == True %}
+            <p>You Have A Request That Has Not Been Responded To.<br>When It Has Been Responded To, You Will Receive A Message And You Can View Status Here.</p>
+        {%else%}
+            <form method="post" id="loanForm">
+                <h3>REQUEST FOR LOAN</h3><br>
+                <div class="ml-4">
+                    <p>Note That There Is An Interest At A <b>Rate Of 15% Every Month (0.5% Every Day)</b> Till The Loan Is Settled.</p>
+                    {%csrf_token%}
+                    AMOUNT: <input type="number" name="amount" id="amount" max="100000" required><br><br>
+                    REASON: <input type="text" name="reason" required><br><br>
+                    SOURCE OF INCOME: <input type="text" name="income" required><br><br>
+                    <div class="flex">
+                        FOR: <div class="spacer"></div>
+                            <input type="checkbox" name="1week" id="1week"> 1 WEEK <div class="spacer"></div>
+                            <input type="checkbox" name="1month" id="1month"> 1 MONTH <div class="spacer"></div>
+                            <input type="checkbox" name="3months" id="3months"> 3 MONTHS <div class="spacer"></div>
+                            <input type="checkbox" name="6months" id="6months"> 6 MONTHS
+                    </div><br>
+                    <div class="flex flex-justify">
+                        <div>TRANSACTION PIN: <input type="password" name="pin" maxlength="4" minlength="4" required></div>
+                        <div><input type="submit" value="Request" class="btn btn-info"></div>
+                    </div>
+                </div>
+            </form>
+
+            {% load static %}
+            <script src="{% static 'js/submit.js' %}"></script>
+            <script>
+                const accountDetail = "{{account.account_name}} / {{account.account_number}}"
+            </script>
+        {%endif%}
+    {%else%}
+        <p>You Cannot Borrow From Us At The Moment.<br>
+        You Have To Be Our Customer For More Than 6 Months And You Must Have Spent More Than ₦10 000 In Your Account.</p>
+    {%endif%}
+{% elif valid_loan == True %}
+    <p>You Still Have An Outstanding Payment With Us. Make Sure You Pay Up Before {{valid_loan_object.till}}.</p><br>
+    <h3>LOAN DETAILS</h3><br>
+    <div class="ml-4">
+        <p>ACCOUNT: {{valid_loan_object.account.account_name}} / {{valid_loan_object.account.account_number}}</p>
+        <p>LATEST AMOUNT: ₦{{valid_loan_object.new_amount}}</p>
+        <p>PAY BEFORE: {{valid_loan_object.till}}</p>
+        <a href="{% url 'payloan' valid_loan_object.pk %}" class="btn btn-success">Pay Now</a>
+    </div>
+{% elif in_debt == True %}
+    <p>You Are Supposed To Have Paid This Loan Before {{in_debt_object.till}}. Make Sure You Have The New Amount In Your Account Then Pay.</p><br>
+    <h3>LOAN DETAILS</h3><br>
+    <div class="ml-4">
+        <p>ACCOUNT: {{in_debt_object.account.account_name}}/{{in_debt_object.account.account_number}}</p>
+        <p>LATEST AMOUNT: ₦{{in_debt_object.new_amount}}</p>
+        <a href="{% url 'payloan' in_debt_object.pk %}" class="btn btn-success">Pay Now</a>
+    </div>
+{%endif%}
+{% if loan %}<br><br>
+<h3>LOAN HISTORY</h3><br>
+<div class="ml-4">
+    <div style="max-width: 100%; overflow-x: auto;">
+        <table border="1" cellspacing="0">
+            <tr>
+                <th>DATE</th>
+                <th>AMOUNT</th>
+                <th>LATEST AMOUNT</th>
+                <th>FOR</th>
+                <th>TILL</th>
+                <th>STATUS</th>
+                <th>ACTION</th>
+            </tr>
+            {% for data in loan %}
+            <tr>
+                <td>{{data.date}}</td>
+                <td>₦{{data.amount}}</td>
+                <td>₦{{data.new_amount}}</td>
+                <td>{{data.period}}</td>
+                <td>{{data.till}}</td>
+                <td>
+                    {% if data.approved == True and data.paid == True %}
+                        Loan Approved And You Have Returned It
+                    {% elif data.approved == True and data.paid == False %}
+                        Loan Approved But You Have Not Returned It
+                    {% elif data.disapproved == True %}
+                        Loan Not Approved
+                    {% elif data.approved == False and data.disapproved == False %}
+                        Loan Has Not Yet Been Attended To
+                    {%endif%}
+                </td>
+                <td><a href="{% url 'loandetail' data.pk %}" class="btn btn-info">View Detail</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{%endif%}
+{% endblock %}

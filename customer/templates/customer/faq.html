@@ -1,0 +1,12 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+    <div class="container col-lg-6">
+        <h2 class="center">FREQUENTLY ASKED QUESTIONS(FAQs)</h2>
+        <a href="{{request.META.HTTP_REFERER}}">Back</a><hr><br>
+        {% for obj in faq %}
+            <p style="color: blue;">• {{obj.question}}</p>
+            <p class="ml-4">{{obj.answer}}</p><hr>
+        {%endfor%}
+    </div>
+{% endblock %}

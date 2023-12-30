@@ -1,0 +1,17 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+<div class="container col-lg-6">
+    <h2 class="center">New Bill</h2>
+    <h3>Account: {{account.account_name}} / ₦{{account.user.balance}}</h3><br>
+    <a href="{% url 'customerbill' account.pk %}">Back</a><hr><br>
+    <form method="post">
+        {%csrf_token%}
+        {{form.as_p}}
+        <div class="right"><input type="submit" value="Next" class="btn btn-primary"></div>
+    </form>
+</div>
+
+    {% load static %}
+    <script src="{% static 'js/orphanageform.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+<div class="container col-lg-6">
+    <h2 class="center">REQUEST BANK STATEMENT</h2>
+    <h3>{{account.account_name}} / {{account.account_number}}</h3><br>
+    <a href="{% url 'customerdetail' account.account_number %}">Back</a><hr><br>
+    <p>Note: Cost Of Bank Statement Is ₦100 For Any Method<br>
+    In <b>Document</b> Method, The Bank Statement Will Be Downloaded Immediately While In <b>Mail</b> Method, Your Bank Statement Will Be Sent To Your Email</p><br>
+    <form method="post" id="statementForm">
+        {%csrf_token%}
+        CHOOSE METHOD: &nbsp; &nbsp; <input type="checkbox" name="doc" id="doc">Document &nbsp; &nbsp; <input type="checkbox" name="email" id="email">Mail<br><br>
+        FROM: <input type="date" name="start" id="start" required><br><br>
+        TO: <input type="date" name="stop" id="stop" required><br><br>
+        <div class="right"><input type="submit" value="Next" class="btn btn-primary"></div>
+    </form>
+</div>
+
+    {% load static %}
+    <script src="{% static 'js/submit.js' %}"></script>
+    <script>
+        const accountDetail = "{{account.account_name}} / {{account.account_number}}"
+    </script>
+{% endblock %}

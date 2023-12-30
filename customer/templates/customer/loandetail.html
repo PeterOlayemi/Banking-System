@@ -1,0 +1,35 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+<div class="container col-lg-6">
+    <h2 class="center">LOAN DETAIL</h2>
+    <a href="{% url 'loan' %}">Back</a><hr><br>
+    <p>ACCOUNT: {{loan.account.account_name}} / {{loan.account.account_number}}</p>
+    <p>AMOUNT: ₦{{loan.amount}}</p>
+    {% if loan.new_amount %}
+        <p>LATEST AMOUNT: ₦{{loan.new_amount}}</p>
+    {%endif%}
+    <p>FOR: {{loan.period}}</p>
+    {% if loan.till %}
+        <p>TILL: {{loan.till}}</p>
+    {%endif%}
+    <p>DATE: {{loan.date}}</p>
+    <p>
+        STATUS:
+        {% if loan.approved == True and loan.paid == True %}
+            Loan Approved And Has Been Returned
+        {% elif loan.approved == True and loan.paid == False %}
+            Loan Approved But Has Not Been Returned
+        {% elif loan.disapproved == True %}
+            Loan Not Approved
+        {% elif loan.approved == False and loan.disapproved == False %}
+            Loan Has Not Yet Been Attended To
+        {%endif%}
+    </p>
+    <p class="right">
+        {% if loan.approved == True and loan.paid == False %}
+            <a href="{% url 'payloan' loan.pk %}" class="btn btn-success">Pay Now</a>
+        {%endif%}
+    </p>
+</div>
+{% endblock %}

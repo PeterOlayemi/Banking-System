@@ -79,14 +79,23 @@ Welcome to the Modern Banking Website, a fully-fledged online banking platform d
 ### 2. Install dependencies:
     pip install -r requirements.txt
 
-### 3: Migrate server:
+### 3. Create environment variables (.env) file containing these variables (all vars are set to an empty string for testing purpose only):
+    SECRET_KEY = 'your_django_secret_key'
+    my_email = 'your_email_address'
+    appsPassword = 'your_appspassword_for_email'
+    MOBILENIG_SECRET_KEY = 'your_mobilenig_secret_key'
+    MOBILENIG_PUBLIC_KEY = 'your_mobilenig_public_key'
+    PAYSTACK_SECRET_KEY = 'your_paystack_secret_key'
+    PAYSTACK_PUBLIC_KEY = 'your_paystack_public_key'
+
+### 4: Migrate server:
     python manage.py makemigrations
     python manage.py migrate
 
-### 4: Run the development server:
+### 5: Run the development server:
     python manage.py runserver
 
-### 5: Access the application at http://localhost:8000 in your browser.
+### 6: Access the application at http://localhost:8000/portal/customer/login/ for customer interface or http://localhost:8000/portal/staff/login/ for staff interface in your browser.
 
 ## Screenshots
 - Customer Dashboard:

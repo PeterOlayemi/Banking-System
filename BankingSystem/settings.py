@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 from decouple import config
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY', default='')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -145,14 +145,14 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 EMAIL_USE_TLS = True  
 EMAIL_HOST = 'smtp.gmail.com'  
-EMAIL_HOST_USER = config('my_email')
-EMAIL_HOST_PASSWORD = config('appsPassword')
+EMAIL_HOST_USER = config('my_email', default='')
+EMAIL_HOST_PASSWORD = config('appsPassword', default='')
 EMAIL_PORT = 587  
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-MOBILENIG_SECRET_KEY = config('MOBILENIG_SECRET_KEY')
-MOBILENIG_PUBLIC_KEY = config('MOBILENIG_PUBLIC_KEY')
+MOBILENIG_SECRET_KEY = config('MOBILENIG_SECRET_KEY', default='')
+MOBILENIG_PUBLIC_KEY = config('MOBILENIG_PUBLIC_KEY', default='')
 
 
-PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY')
-PAYSTACK_PUBLIC_KEY = config('PAYSTACK_PUBLIC_KEY')
+PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY', default='')
+PAYSTACK_PUBLIC_KEY = config('PAYSTACK_PUBLIC_KEY', default='')

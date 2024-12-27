@@ -10,6 +10,14 @@ from django.contrib.auth.forms import SetPasswordForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import datetime
 from django.db.models import Q, Count
+from django.http import FileResponse
+from django.utils import timezone
+from io import BytesIO
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+
 
 from .models import *
 from user.models import *
@@ -2081,49 +2089,62 @@ def CustomerStatementView(request, pk):
                 account.user.balance -= float(100)
                 account.user.save()
                 statement = Alert.objects.filter(user=account.user, date__date__range=(start, stop))
-                doc = Document()
-                doc.add_heading('Patridge Bank', level=1)
-                doc.add_heading('Bank Statement', level=2)
-                doc.add_paragraph(f'Account Name: {account.account_name}')
-                doc.add_paragraph(f'Account Number: {account.account_number}')
-                doc.add_paragraph(f'Date: {timezone.now().date()}')
-                doc.add_paragraph(f'Statement From: {start}')
-                doc.add_paragraph(f'Statement To: {stop}')
-                if Alert.objects.filter(user=account.user, date__date__range=(start, stop), txn='Debit').exists():
-                    debits = Alert.objects.filter(user=account.user, date__date__range=(start, stop), txn='Debit')
-                    trans = [float(debit.amount) for debit in debits]
-                    total_debit = sum(trans)
-                else:
-                    total_debit = 0
-                if Alert.objects.filter(user=account.user, date__date__range=(start, stop), txn='Credit').exists():
-                    credits = Alert.objects.filter(user=account.user, date__date__range=(start, stop), txn='Credit')
-                    trans = [float(credit.amount) for credit in credits]
-                    total_credit = sum(trans)
-                else:
-                    total_credit = 0
-                doc.add_paragraph(f'Total Credits: ₦{total_credit}')
-                doc.add_paragraph(f'Total Debits: ₦{total_debit}')
-                doc.add_paragraph(f'Latest Balance: ₦{account.user.balance}')
-                doc.add_heading('Statement Details', level=1)
-                table = doc.add_table(rows=1, cols=5)
-                table.style = 'Table Grid'
-                table.cell(0,0).text = 'Date'
-                table.cell(0,1).text = 'Transaction'
-                table.cell(0,2).text = 'Details'
-                table.cell(0,3).text = 'Amount(₦)'
-                table.cell(0,4).text = 'Balance(₦)'
+                debits = [float(debit.amount) for debit in statement if debit.txn == 'Debit']
+                credits = [float(credit.amount) for credit in statement if credit.txn == 'Credit']
+                total_debit = sum(debits) if debits else 0
+                total_credit = sum(credits) if credits else 0
+
+                buffer = BytesIO()
+                doc = SimpleDocTemplate(buffer, pagesize=letter)
+                elements = []
+                styles = getSampleStyleSheet()
+
+                # Add headings
+                elements.append(Paragraph("Partridge Bank", styles['Title']))
+                elements.append(Paragraph("Bank Statement", styles['Heading2']))
+
+                # Add account details
+                details = [
+                    f"Account Name: {account.account_name}",
+                    f"Account Number: {account.account_number}",
+                    f"Date: {timezone.now().date()}",
+                    f"Statement From: {start}",
+                    f"Statement To: {stop}",
+                    f"Total Credits: ₦{total_credit}",
+                    f"Total Debits: ₦{total_debit}",
+                    f"Latest Balance: ₦{account.user.balance}",
+                ]
+                for detail in details:
+                    elements.append(Paragraph(detail, styles['Normal']))
+
+                # Add transaction table
+                data = [['Date', 'Transaction', 'Details', 'Amount(₦)', 'Balance(₦)']]
                 for obj in statement:
-                    row = table.add_row().cells
-                    row[0].text = str(obj.date)
-                    row[1].text = str(obj.txn)
-                    row[2].text = str(obj.detail)
-                    row[3].text = str(obj.amount)
-                    row[4].text = str(obj.balance)
-                doc_io = BytesIO()
-                doc.save(doc_io)
-                doc_io.seek(0)
-                response = FileResponse(doc_io, content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-                response['Content-Disposition'] = f'attachment; filename={account.account_name}/statement/{timezone.now()}.docx'
+                    data.append([
+                        str(obj.date),
+                        str(obj.txn),
+                        str(obj.detail),
+                        f"₦{obj.amount}",
+                        f"₦{obj.balance}"
+                    ])
+
+                table = Table(data)
+                table.setStyle(TableStyle([
+                    ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                    ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                    ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                    ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                    ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                    ('GRID', (0, 0), (-1, -1), 1, colors.black),
+                ]))
+                elements.append(table)
+
+                # Build the PDF
+                doc.build(elements)
+                buffer.seek(0)
+                response = FileResponse(buffer, content_type='application/pdf')
+                response['Content-Disposition'] = f'attachment; filename={account.account_name}_statement_{timezone.now().strftime("%Y%m%d")}.pdf'
                 new = Alert(amount=float(100), balance=account.user.balance, user=account.user, statement=True, txn='Debit', how='Mobile', which='Patridge Bank')
                 new.detail = f'Bank Statement/{new.how}/{new.which}'
                 new.save()

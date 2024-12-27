@@ -21,7 +21,7 @@ Welcome to the Modern Banking Website, a fully-fledged online banking platform d
   - Fund accounts securely using Paystack.
   - View and manage beneficiaries.
   - Daily transaction limit.
-  - Get Bank Statement through direct download or email in document form.
+  - Get Bank Statement through direct download or email in pdf form.
   - Loan management with interest calculator.
 
 - **Financial Transactions:**

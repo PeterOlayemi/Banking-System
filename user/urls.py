@@ -14,7 +14,7 @@ urlpatterns = [
     path('customer/password_change/', auth_views.PasswordChangeView.as_view(template_name='customer/password_change.html', success_url='/portal/customer/password_change/done/'), name='customer_password_change'),
     path('customer/password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='customer/password_change_done.html'), name='customer_password_change_done'),
     
-    path('account/activate/(<uidb64>[0-9A-Za-z_\-]+)/(<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', ActivateAccountView, name='activate'),
+    path('account/activate/(<uidb64>[0-9A-Za-z_\\-]+)/(<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', ActivateAccountView, name='activate'),
     path('term/', TermView, name='term'),
     path('privacy/', PrivacyView, name='privacy'),
     

@@ -1403,6 +1403,7 @@ class MNElectricity:
         if response.status_code == 200:
             try:
                 response_data = response.json()
+                print(response_data)
                 if response_data['details'] == None:
                     return 'Error'
                 elif response_data['message'] != 'success':

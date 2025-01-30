@@ -1379,22 +1379,6 @@ def CustomerCablePaymentView(request, pk):
             if result == 'Error':
                 messages.error(request, 'An Error Occurred. Check The Card Number And Try Again.')
                 return redirect(reverse('customercable', args=[account.pk]))
-            detail = result
-            if bill.cable.plan:
-                if bill.cable.service.name == 'Startimes':
-                    amount = detail['billAmount']
-                else:
-                    amount = detail['amount']
-                if bill.cable.service.name == 'GOTV':
-                    old_plan = get_closest_plan('GOTV', amount)
-                if bill.cable.service.name == 'DSTV':
-                    old_plan = get_closest_plan('DSTV', amount)
-                if bill.cable.service.name == 'Startimes':
-                    old_plan = get_closest_plan('Startimes', amount)
-                new_plan = bill.cable.plan
-                if old_plan == new_plan:
-                    messages.error(request, 'You Want To Recharge Thesame Plan. Pick Renew Subscription In Your Form')
-                    return redirect(reverse('customercable', args=[account.pk]))
             messages.info(request, 'Confirm Transaction')
             return redirect(reverse('customerconfirmbill', args=[bill.pk]))
     return render(request, 'staff/customercablepayment.html', {'unread_conversation':unread_conversation, 'form':form, 'account':account})
@@ -1444,7 +1428,7 @@ def CustomerConfirmBillView(request, pk):
             invoicePeriod = detail['invoicePeriod']
             customerNumber = detail['customerNumber']
             if bill.cable.plan:
-                amount = detail['amount']
+                amount = bill.amount
                 if bill.cable.service.name == 'GOTV':
                     old_plan = get_closest_plan('GOTV', amount)
                 if bill.cable.service.name == 'DSTV':
@@ -1455,7 +1439,7 @@ def CustomerConfirmBillView(request, pk):
                 old_amount = old_plan.amount
                 new_amount = bill.cable.plan.amount
             else:
-                amount = detail['amount']
+                amount = bill.amount
                 if bill.cable.service.name == 'GOTV':
                     old_plan = get_closest_plan('GOTV', amount)
                 if bill.cable.service.name == 'DSTV':
@@ -1486,7 +1470,7 @@ def CustomerConfirmBillView(request, pk):
             invoicePeriod = detail['invoicePeriod']
             customerNumber = detail['customerNumber']
             if bill.cable.plan:
-                amount = detail['amount']
+                amount = bill.amount
                 if bill.cable.service.name == 'GOTV':
                     old_plan = get_closest_plan('GOTV', amount)
                 if bill.cable.service.name == 'DSTV':
@@ -1497,7 +1481,7 @@ def CustomerConfirmBillView(request, pk):
                 old_amount = old_plan.amount
                 new_amount = bill.cable.plan.amount
             else:
-                amount = detail['amount']
+                amount = bill.amount
                 if bill.cable.service.name == 'GOTV':
                     old_plan = get_closest_plan('GOTV', amount)
                 if bill.cable.service.name == 'DSTV':
@@ -1528,7 +1512,7 @@ def CustomerConfirmBillView(request, pk):
             invoicePeriod = None
             customerNumber = detail['customerNumber']
             if bill.cable.plan:
-                amount = detail['billAmount']
+                amount = bill.amount
                 if bill.cable.service.name == 'GOTV':
                     old_plan = get_closest_plan('GOTV', amount)
                 if bill.cable.service.name == 'DSTV':
@@ -1539,7 +1523,7 @@ def CustomerConfirmBillView(request, pk):
                 old_amount = old_plan.amount
                 new_amount = bill.cable.plan.amount
             else:
-                amount = detail['billAmount']
+                amount = bill.amount
                 if bill.cable.service.name == 'GOTV':
                     old_plan = get_closest_plan('GOTV', amount)
                 if bill.cable.service.name == 'DSTV':
